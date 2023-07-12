@@ -239,3 +239,10 @@ If additional walls remain, they can be manually removed directly from Webots.
 
 ![Maze on Webots](/screenshot/Maze_Webots.png)
 ![Plan on Webots](/screenshot/Plan_Webots.png)
+
+### To Do
+Update README to include:
+  Existing Features
+  Features not included (Non straight walls)
+  Include To Do list
+  Getting started instructions
