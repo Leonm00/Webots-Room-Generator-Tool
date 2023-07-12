@@ -247,6 +247,10 @@ Update README to include:
   - Include To Do list
   - Getting started instructions
 Create an install.sh script
+
 Create requirments.txt list
+
 Include python versions which have been successfully tested
+
 Include instructions on python venv
+
