@@ -254,3 +254,5 @@ Include python versions which have been successfully tested
 
 Include instructions on python venv
 
+User specify webots working directory, OR just allow them to copy paste after generation
+
