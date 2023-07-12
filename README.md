@@ -246,3 +246,7 @@ Update README to include:
   - Features not included (Non straight walls)
   - Include To Do list
   - Getting started instructions
+Create an install.sh script
+Create requirments.txt list
+Include python versions which have been successfully tested
+Include instructions on python venv
