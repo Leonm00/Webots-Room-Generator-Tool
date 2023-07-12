@@ -242,7 +242,7 @@ If additional walls remain, they can be manually removed directly from Webots.
 
 ### To Do
 Update README to include:
-  Existing Features
-  Features not included (Non straight walls)
-  Include To Do list
-  Getting started instructions
+  - Existing Features
+  - Features not included (Non straight walls)
+  - Include To Do list
+  - Getting started instructions
