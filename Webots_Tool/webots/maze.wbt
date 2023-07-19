@@ -1,0 +1,497 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+WorldInfo {
+  basicTimeStep 16
+  contactProperties [
+    ContactProperties {
+      material2 "caster"
+      coulombFriction [
+        0.01
+      ]
+      softERP 0.1
+      softCFM 0.0002
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.577 0.577 0.577 2.09
+  position 10.0 -10.0 40.0
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Solid {
+  translation 0 0 1.0
+  rotation 1 0 0 3.14159
+  children [
+    Solid {
+      translation 20.0 13.40909090909091 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance DEF Wall_app PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "https://lynchp13.github.io/old1/WhitePaintedWall.jpg"
+              ]
+            }
+            transparency 0.0 
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.02 13.181818181818182 2.0
+          }
+        }
+      ]
+      name "W_0"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 1.893939393939394 10.0 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 16.21212121212121 2.0
+          }
+        }
+      ]
+      name "W_1"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 0.0 7.575757575757576 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 15.151515151515152 2.0
+          }
+        }
+      ]
+      name "W_2"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 18.106060606060606 12.462121212121213 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 11.287878787878789 2.0
+          }
+        }
+      ]
+      name "W_3"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 15.984848484848484 9.962121212121213 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 12.045454545454545 2.0
+          }
+        }
+      ]
+      name "W_4"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 4.090909090909091 10.0 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 11.96969696969697 2.0
+          }
+        }
+      ]
+      name "W_5"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 13.863636363636363 7.5 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 2.7272727272727275 2.0
+          }
+        }
+      ]
+      name "W_6"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 6.212121212121212 10.0 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 7.7272727272727275 2.0
+          }
+        }
+      ]
+      name "W_7"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 0.0 18.484848484848484 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 3.0303030303030303 2.0
+          }
+        }
+      ]
+      name "W_8"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 12.121212121212121 9.924242424242424 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 4.3939393939393945 2.0
+          }
+        }
+      ]
+      name "W_9"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 7.878787878787879 9.924242424242424 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 4.3939393939393945 2.0
+          }
+        }
+      ]
+      name "W_10"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 20.0 2.3863636363636362 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 4.7727272727272725 2.0
+          }
+        }
+      ]
+      name "W_11"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 13.863636363636363 12.537878787878789 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 2.6515151515151514 2.0
+          }
+        }
+      ]
+      name "W_12"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 8.56060606060606 4.015151515151516 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 4.242424242424242 2.0
+          }
+        }
+      ]
+      name "W_13"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 18.106060606060606 3.3333333333333335 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 2.878787878787879 2.0
+          }
+        }
+      ]
+      name "W_14"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.075757575757576 7.121212121212121 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 1.9696969696969697 2.0
+          }
+        }
+      ]
+      name "W_15"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.0 18.106060606060606 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 16.21212121212121 2.0
+          }
+        }
+      ]
+      name "W_16"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.0 20.0 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 20.0 2.0
+          }
+        }
+      ]
+      name "W_17"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 5.833333333333334 1.893939393939394 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 7.878787878787879 2.0
+          }
+        }
+      ]
+      name "W_18"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.0 0.0 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 20.0 2.0
+          }
+        }
+      ]
+      name "W_19"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.037878787878789 15.984848484848484 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 11.893939393939394 2.0
+          }
+        }
+      ]
+      name "W_20"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.037878787878789 13.863636363636363 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 7.651515151515151 2.0
+          }
+        }
+      ]
+      name "W_21"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 11.212121212121213 4.015151515151516 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 5.303030303030303 2.0
+          }
+        }
+      ]
+      name "W_22"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 14.924242424242424 1.893939393939394 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 6.363636363636364 2.0
+          }
+        }
+      ]
+      name "W_23"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 8.143939393939394 6.136363636363637 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 3.8636363636363638 2.0
+          }
+        }
+      ]
+      name "W_24"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 17.992424242424242 4.7727272727272725 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 4.015151515151516 2.0
+          }
+        }
+      ]
+      name "W_25"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 5.2272727272727275 4.015151515151516 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 2.272727272727273 2.0
+          }
+        }
+      ]
+      name "W_26"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.0 12.121212121212121 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 4.242424242424242 2.0
+          }
+        }
+      ]
+      name "W_27"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 14.053030303030303 8.863636363636363 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 3.8636363636363638 2.0
+          }
+        }
+      ]
+      name "W_28"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 19.053030303030305 6.818181818181818 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 1.893939393939394 2.0
+          }
+        }
+      ]
+      name "W_29"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 12.954545454545455 6.136363636363637 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 1.8181818181818183 2.0
+          }
+        }
+      ]
+      name "W_30"
+      boundingObject USE WALL
+    }
+  ]
+  name "Walls"
+  boundingObject USE WALL
+}
+Solid {
+  translation 10.0 -10.0 -0.1
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "https://lynchp13.github.io/old1/WoodenFloor.jpeg"
+          ]
+        }
+        roughness 1
+        metalness 0
+      }
+      geometry DEF Floor Box {
+        size 20.0 20.0 0.2
+      }
+    }
+  ]
+  name "Floor"
+  boundingObject USE Floor
+}
