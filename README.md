@@ -10,6 +10,13 @@ This tool has two main features :
 - Using a graphic interface to create the different walls
 - Using an image to extract contours representing walls
 
+## Features not included 
+This tool cannot be used to create walls that are not straight.
+
+## Successfully tested version of Python
+- Python 3.10
+- Python 3.11
+
 ## Libraries used
 
 - [NumPy](https://pypi.org/project/numpy/) for arrays
@@ -30,15 +37,32 @@ import cv2
 ```
 ## Main steps
 
+### Default Configuration
+The first step is to choose whether or not to modify the default configuration. To start with, use only the first choice.
+```
+Welcome to this Webots Room Generator Tool. What do you want to do ?
+1 - Use the Webots Tool
+2 - Change the Default Configuration
+3 - View the Default Configuration before making a choice
+Choice (int) : 1
+```
+
 ### Choose the feature
-The first step is to choose whether to use the graphical interface (1) or an image (2).
+The second step is to choose whether to use the graphical interface (1) or an image (2).
 ```
 Please choose the feature you want to use for this Webots Room Generator Tool :
 1 - Manual
 2 - With an image (does not work well for complex plans)
 Choice (int) : 
 ```
-### Initialize grid or read image
+
+### Use of the Default Configuration 
+```
+Do you want to use the Default Configuration ?
+  Press 'Y' for Yes or 'N' for No : 
+```
+
+### Initialize grid (if Default Configuration is not used) or read image
 ```
 Keep in mind that too many cells will result in a grid with very small cells.
 Number of cells on the x-axis (int between 2 and 100) :
@@ -48,12 +72,14 @@ Number of cells on the y-axis (int between 2 and 100) :
 Give the image name (don't forget the file format) :
 ```
 
-### Name and wall characteristics
+### Name and wall characteristics (if Default Configuration is not used)
 ```
 Give the name for the webots file :
+```
+```
 Define wall height (in meters). The default value is 2 :
 Define wall thickness (in meters). The default value is 0.02 :
-Define wall transparency (float between 0 and 1 | 1 for a transparent wall. The default value is 0 :
+Define wall transparency (float between 0 and 1 | 1 for a transparent wall). The default value is 0 :
 Define the total length of the figure (in meters), the width will be adjusted accordingly :
 ```
 
@@ -91,9 +117,30 @@ Mode (int) :
 
 ```
 Give the name for the webots file : example
+```
+
+```
+Do you want to delete some lines ?
+  Press 'Y' for Yes or 'N' for No : N
+```
+
+```
 Define wall height (in meters). The default value is 2 : 2
 Define wall thickness (in meters). The default value is 0.02 : 0.02
-Define wall transparency (float between 0 and 1 | 1 for a transparent wall. The default value is 0 : 0
+Define wall transparency (float between 0 and 1 | 1 for a transparent wall). The default value is 0 : 0
+```
+
+```
+Please choose the option you want for the size of the final figure : 
+  1 - Define the total length of the figure
+  2 - Define the length of a line
+  3 - Define the length of a vertical line
+  4 - Define the length of a horizontal line
+  5 - Define the length of a diagonal line
+Choice (int) : 1
+```
+
+```
 Define the total length of the figure (in meters), the width will be adjusted accordingly : 20
 ```
 
@@ -108,6 +155,12 @@ Please choose the feature you want to use for this Webots Room Generator Tool :
 Choice (int) : 2
 ```
 ### Step-by-step examples
+
+### Use of the Default Configuration
+```
+Do you want to use the Default Configuration ?
+  Press 'Y' for Yes or 'N' for No : N 
+```
 
 #### Image name
 The image must be in the images folder.
@@ -234,25 +287,53 @@ This step allows you to remove the lonely walls if you wish.
 
 ![Plan without Holes](/screenshot/Plan_Without_Hole.png)
 
+```
+Is the previous figure satisfatory (detection of all the wanted line) ?
+  Press 'Y' to confirm the choice or 'N' to change it : Y
+```
+
+```
+Give the name for the webots file : plan
+Define wall height (in meters). The default value is 2 : 2
+Define wall thickness (in meters). The default value is 0.02 : 0.02
+Define wall transparency (float between 0 and 1 | 1 for a transparent wall). The default value is 0 : 0
+```
+
+```
+Do you want to delete some lines ?
+  Press 'Y' for Yes or 'N' for No : Y
+```
+To delete additional lines.
+
+![Plan with Delete Line](/screenshot/Plan_Delete_Line.png)
+
+Click on the two points of an existing line before clicking on the "Delete line" button to delete the line. You can delete as many lines as you want. When finished, click on the "Finish" button.
+
+![Plan with Delete Line (2)](/screenshot/Plan_Delete_Lines.png)
+
+![Plan with Delete Line (3)](/screenshot/Plan_Delete_More_Lines.png)
+
+```
+Please choose the option you want for the size of the final figure : 
+  1 - Define the total length of the figure
+  2 - Define the length of a line
+  3 - Define the length of a vertical line
+  4 - Define the length of a horizontal line
+  5 - Define the length of a diagonal line
+Choice (int) : 2
+```
+
+![Plan with Select Line](/screenshot/Plan_Select_Line.png)
+
+```
+Define the length of the selected line (in meters), the width will be adjusted accordingly : 5
+  Total length of the figure : 35.0 meters
+```
+
 ### Results
 If additional walls remain, they can be manually removed directly from Webots.
 
 ![Maze on Webots](/screenshot/Maze_Webots.png)
 ![Plan on Webots](/screenshot/Plan_Webots.png)
 
-### To Do
-Update README to include:
-  - Existing Features
-  - Features not included (Non straight walls)
-  - Include To Do list
-  - Getting started instructions
-Create an install.sh script
-
-Create requirments.txt list
-
-Include python versions which have been successfully tested
-
-Include instructions on python venv
-
-User specify webots working directory, OR just allow them to copy paste after generation
-
+## To Do
