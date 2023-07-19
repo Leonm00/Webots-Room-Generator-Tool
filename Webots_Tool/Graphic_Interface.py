@@ -324,8 +324,8 @@ class ChooseLength(tk.Tk) :
         """
         self.c = Choice
         # Gets the number of cells 
-        self.w = max_x + min_x
-        self.h = max_y + min_y
+        self.w = int(max_x + min_x)
+        self.h = int(max_y + min_y)
         # Gets the choice of mode
         self.m = ModeChoice
 
@@ -586,8 +586,8 @@ class DeleteLine(tk.Tk) :
         """
         self.c = Choice
         # Gets the number of cells 
-        self.w = max_x + min_x
-        self.h = max_y + min_y
+        self.w = int(max_x + min_x)
+        self.h = int(max_y + min_y)
 
         # Use the __init__ method of the parent class tk.Tk to create a window
         super().__init__()
