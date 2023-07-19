@@ -167,7 +167,7 @@ def get_default_configuration() :
             print(" Maximum gap between two lines to be considered in the same line (int) : ", int(config[6]))
             print(" Maximum gap between two parellel lines to be considered as the same line (int) : ", int(config[7]))
             print("")
-            print("## Wall Parameters")
+            print("## Wall Parameters ##")
             print(" Wall height (in meters) : ", float(config[8]))
             print(" Wall thickness (in meters) : ", float(config[9]))
             print(" Wall transparency (float between 0 and 1) : ", float(config[10]))
