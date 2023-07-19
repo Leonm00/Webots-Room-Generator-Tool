@@ -1,0 +1,18 @@
+# Default configuration for the Webots Tool
+
+# Manual Mode
+20 # Number of cells on the x-axis (int between 2 and 100)
+20 # Number of cells on the y-axis (int between 2 and 100)
+
+# Image Processing
+127 # Threshold for the binary image (int between 0 and 255)
+10 # Minimum number of points that can form a line (int)
+10 # Maximum gap between two points to be considered in the same line (int)
+15 # Angle for pseudo-vertical and pseudo-horizontal
+10 # Maximum gap between two lines to be considered in the same line (int)
+10 # Maximum gap between two parellel lines to be considered as the same line (int)
+
+# Wall Parameters
+2.0 # Wall height (in meters)
+0.02 # Wall thickness (in meters)
+0.0 # Wall transparency (float between 0 and 1)
