@@ -12,6 +12,9 @@ def get_infos() :
         ModeChoice (_int_): _Corresponds to the option used in manual mode_
         W_room (_list_): _Corresponds to the list containing the wall positions_
         nbr_wall (_int_): _Corresponds to the number of walls to be placed in the webots file_
+        W_vertical (_list_): _The list containing the points of the vertical lines_
+        W_horizontal (_list_): _The list containing the points of the horizontal lines_
+        W_diagonal (_list_): _The list containing the points of the diagonal lines_
     """
     # We extract the file containing the points of the figure
     with warnings.catch_warnings():
@@ -28,6 +31,20 @@ def get_infos() :
         for i in range(len(room1)) :
             W_room.append([room_x[i], room_y[i]])
         nbr_wall = len(W_room) - 1
+        W_vertical = []
+        W_horizontal = []
+        W_diagonal = []
+        for i in range(len(room1) - 1) :
+            if room_x[i] == room_x[i + 1] :
+                W_vertical.append([int(room_x[i]), int(room_y[i])])
+                W_vertical.append([int(room_x[i + 1]), int(room_y[i + 1])])
+            elif room_y[i] == room_y[i + 1] :
+                W_horizontal.append([int(room_x[i]), int(room_y[i])])
+                W_horizontal.append([int(room_x[i + 1]), int(room_y[i + 1])])
+            else : 
+                W_diagonal.append([int(room_x[i]), int(room_y[i])])
+                W_diagonal.append([int(room_x[i + 1]), int(room_y[i + 1])])
+            
     elif len(room2) != 0 : 
         ModeChoice = 2
         room_x = room2[:,0]
@@ -36,13 +53,29 @@ def get_infos() :
         for i in range(len(room2)) :
             W_room.append([room_x[i], room_y[i]])
         nbr_wall = int(len(W_room) / 2)
+        W_vertical = []
+        W_horizontal = []
+        W_diagonal = []
+        for i in range(int(len(room2) / 2)) :
+            if room_x[2 * i] == room_x[2 * i + 1] :
+                W_vertical.append([room_x[2 * i], room_y[2 *i]])
+                W_vertical.append([room_x[2 * i + 1], room_y[2 * i + 1]])
+            elif room_y[2 * i] == room_y[2 * i + 1] :
+                W_horizontal.append([room_x[2 * i], room_y[2 *i]])
+                W_horizontal.append([room_x[2 * i + 1], room_y[2 * i + 1]])
+            else : 
+                W_diagonal.append([room_x[2 * i], room_y[2 *i]])
+                W_diagonal.append([room_x[2 * i + 1], room_y[2 * i + 1]])
     else : 
         print("     ERROR : No saved figure ")
         ModeChoice = 0
         W_room = []
         nbr_wall = 0
+        W_vertical = []
+        W_horizontal = []
+        W_diagonal = []
         
-    return ModeChoice, W_room, nbr_wall
+    return ModeChoice, W_room, nbr_wall, W_vertical, W_horizontal, W_diagonal
 
 def get_wall_infos(vertice_1, vertice_2, min_x, max_x, min_y, max_y, size_grid) :
     """_To find out information about the wall : direction, length, etc_
