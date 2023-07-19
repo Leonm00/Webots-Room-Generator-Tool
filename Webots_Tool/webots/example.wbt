@@ -1,0 +1,188 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+WorldInfo {
+  basicTimeStep 16
+  contactProperties [
+    ContactProperties {
+      material2 "caster"
+      coulombFriction [
+        0.01
+      ]
+      softERP 0.1
+      softCFM 0.0002
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.577 0.577 0.577 2.09
+  position 10.0 11.25 40.0
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Solid {
+  translation 0 0 1.0
+  children [
+    Solid {
+      translation 15.0 18.75 0
+      rotation 0 0 1 -2.2143011087932845
+      children [
+        DEF WALL Shape {
+          appearance DEF Wall_app PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "https://lynchp13.github.io/old1/WhitePaintedWall.jpg"
+              ]
+            }
+            transparency 0.0 
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.02 12.5 2.0
+          }
+        }
+      ]
+      name "W_0"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 20.0 7.5 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 15.0 2.0
+          }
+        }
+      ]
+      name "W_1"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 16.25 0.0 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 7.5 2.0
+          }
+        }
+      ]
+      name "W_2"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 12.5 3.75 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 7.5 2.0
+          }
+        }
+      ]
+      name "W_3"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 10.0 7.5 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 5.0 2.0
+          }
+        }
+      ]
+      name "W_4"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 7.5 3.75 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 7.5 2.0
+          }
+        }
+      ]
+      name "W_5"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 3.75 0.0 0
+      rotation 0 0 1 1.5708
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 7.5 2.0
+          }
+        }
+      ]
+      name "W_6"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 0.0 7.5 0
+      rotation 0 0 1 0
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 15.0 2.0
+          }
+        }
+      ]
+      name "W_7"
+      boundingObject USE WALL
+    }
+    Solid {
+      translation 5.0 18.75 0
+      rotation 0 0 1 -0.9272988912067156
+      children [
+        DEF WALL Shape {
+          appearance USE Wall_app
+          geometry Box {
+            size 0.02 12.5 2.0
+          }
+        }
+      ]
+      name "W_8"
+      boundingObject USE WALL
+    }
+  ]
+  name "Walls"
+  boundingObject USE WALL
+}
+Solid {
+  translation 10.0 11.25 -0.1
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "https://lynchp13.github.io/old1/WoodenFloor.jpeg"
+          ]
+        }
+        roughness 1
+        metalness 0
+      }
+      geometry DEF Floor Box {
+        size 20.0 22.5 0.2
+      }
+    }
+  ]
+  name "Floor"
+  boundingObject USE Floor
+}
