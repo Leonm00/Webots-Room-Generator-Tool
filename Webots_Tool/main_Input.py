@@ -141,9 +141,6 @@ def get_Default_Choice() :
             choice = input("    Press 'Y' for Yes or 'N' for No : ")
     return choice
 
-# Si pas de problème, on affiche le fichier des paramètres par défaut
-# Si problème, on retourne la valeur False et dans get_Config_Choice(), on regarde si l'utilisateur a juste choisi d'utiliser l'outil malgré cet erreur
-# Si oui, on retourne la valeur 4 pour faire savoir que dans les étapes suivantes, on ne proposera pas à l'user d'utiliser ces paramètres par défaut
 def get_default_configuration() :
     """_Displays the current Default Configuration_
 
@@ -367,20 +364,17 @@ def get_Size_Choice() :
     print("Please choose the option you want for the size of the final figure : ")
     print(" 1 - Define the total length of the figure ")
     print(" 2 - Define the length of a line ")
-    print(" 3 - Define the length of a vertical line ")
-    print(" 4 - Define the length of a horizontal line ")
-    print(" 5 - Define the length of a diagonal line ")
     s = input("Choice (int) : ")
     isOK = False 
     while isOK == False : 
         if C.check_input(s) == 'int' :
-            if int(s) == 1 or int(s) == 2 or int(s) == 3 or int(s) == 4 or int(s) == 5 :
+            if int(s) == 1 or int(s) == 2 :
                 isOK = True
             else :  
-                print("     Not an expected int - Please choose between 1 and 5")
+                print("     Not an expected int - Please choose between 1 and 2")
                 s = input("Choice (int) : ")
         else :
-            print("     Not an int - Please choose between 1 and 5")
+            print("     Not an int - Please choose between 1 and 2")
             s = input("Choice (int) : ")
     return int(s)
     
@@ -388,18 +382,18 @@ def get_size_one_length() :
     """_Gets the length (in meters) of the horizontal line_
 
     Returns:
-        l (_float_): _Corresponds to the length of the horizontal line_
+        l (_float_): _Corresponds to the length of the selected line_
     """
-    l = input("Define the length of the horizontal line (in meters), the width will be adjusted accordingly : ")
+    l = input("Define the length of the selected line (in meters), the width will be adjusted accordingly : ")
     isOK = False
     while isOK == False : 
         if C.check_input(l) == 'int' or C.check_input(l) == 'float' :
             if float(l) < 0 :
                 print("     Negative value - Please retry")
-                l = input("Define the length of the horizontal line (in meters) : ")
+                l = input("Define the length of the selected line (in meters) : ")
             elif float(l) == 0 :
                 print("     NULL value - Please retry")
-                l = input("Define the length of the horizontal line (in meters) : ")
+                l = input("Define the length of the selected line (in meters) : ")
             else :
                 isOK = True
         else :
