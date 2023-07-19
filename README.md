@@ -147,9 +147,6 @@ Define wall transparency (float between 0 and 1 | 1 for a transparent wall). The
 Please choose the option you want for the size of the final figure : 
   1 - Define the total length of the figure
   2 - Define the length of a line
-  3 - Define the length of a vertical line
-  4 - Define the length of a horizontal line
-  5 - Define the length of a diagonal line
 Choice (int) : 1
 ```
 
@@ -330,9 +327,6 @@ Click on the two points of an existing line before clicking on the "Delete line"
 Please choose the option you want for the size of the final figure : 
   1 - Define the total length of the figure
   2 - Define the length of a line
-  3 - Define the length of a vertical line
-  4 - Define the length of a horizontal line
-  5 - Define the length of a diagonal line
 Choice (int) : 2
 ```
 
