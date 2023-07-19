@@ -92,38 +92,17 @@ SizeChoice = MI.get_Size_Choice()
 if SizeChoice == 1 :
     size_length = WI.get_total_length()
 else : 
-    if (SizeChoice == 2 and len(W_room) == 0) or (SizeChoice == 3 and len(W_vertical) == 0) or (SizeChoice == 4 and len(W_horizontal) == 0) or (SizeChoice == 5 and len(W_diagonal) == 0) :
-        if SizeChoice == 2 : 
-            print(" There is no line available")
-        elif SizeChoice == 3 :
-            print(" There is no vertical line available")
-        elif SizeChoice == 4 :
-            print(" There is no horizontal line available")
-        else :
-            print(" There is no diagonal line available")
+    if (SizeChoice == 2 and len(W_room) == 0) :
+        print(" There is no line available")
         size_length = WI.get_total_length()
     else :
         with open("size_length.txt", "w") as f :
             if SizeChoice == 2 : 
                 print(" Please select a line from those available")
-            elif SizeChoice == 3 : 
-                print(" Please select a vertical line from those available")
-            elif SizeChoice == 4 :
-                print(" Please select a horizontal line from those available")
-            else : 
-                print(" Please select a diagonal line from those available")
         if SizeChoice == 2 : 
             creator = G.ChooseLength(W_room, W_room, SizeChoice, Choice, ModeChoice, min_x, min_y, max_x, max_y)
             creator.mainloop()
-        elif SizeChoice == 3 : 
-            creator = G.ChooseLength(W_room, W_vertical, SizeChoice, Choice, ModeChoice, min_x, min_y, max_x, max_y)
-            creator.mainloop()
-        elif SizeChoice == 4 :
-            creator = G.ChooseLength(W_room, W_horizontal, SizeChoice, Choice, ModeChoice, min_x, min_y, max_x, max_y)
-            creator.mainloop()
-        else : 
-            creator = G.ChooseLength(W_room, W_diagonal, SizeChoice, Choice, ModeChoice, min_x, min_y, max_x, max_y)
-            creator.mainloop()
+            
         length = np.loadtxt("size_length.txt")
         if len(length) == 2 :
             if C.check_input(length[0]) == 'int' :
