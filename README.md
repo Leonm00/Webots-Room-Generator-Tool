@@ -52,9 +52,9 @@ import cv2
 The first step is to choose whether or not to modify the default configuration. To start with, use only the first choice.
 ```
 Welcome to this Webots Room Generator Tool. What do you want to do ?
-1 - Use the Webots Tool
-2 - Change the Default Configuration
-3 - View the Default Configuration before making a choice
+  1 - Use the Webots Tool
+  2 - Change the Default Configuration
+  3 - View the Default Configuration before making a choice
 Choice (int) : 1
 ```
 
@@ -167,7 +167,7 @@ Choice (int) : 2
 ```
 ### Step-by-step examples
 
-### Use of the Default Configuration
+#### Use of the Default Configuration
 ```
 Do you want to use the Default Configuration ?
   Press 'Y' for Yes or 'N' for No : N 
@@ -225,7 +225,7 @@ Maximum gap between two points to be considered in the same line (int) : 5
 
 ![Plan with Line Detection](/screenshot/Plan_Line_Detection.png)
 
-### User input - Removing excess lines
+#### User input - Removing excess lines
 ```
 Maximum angle of a line in relation to the vertical or horizontal to be considered as a vertical or horizontal line (int between 0 and 45) : 20
 ```
@@ -346,5 +346,34 @@ If additional walls remain, they can be manually removed directly from Webots.
 
 ![Maze on Webots](/screenshot/Maze_Webots.png)
 ![Plan on Webots](/screenshot/Plan_Webots.png)
+
+## About the Default Configuration
+```
+Welcome to this Webots Room Generator Tool. What do you want to do ?
+  1 - Use the Webots Tool
+  2 - Change the Default Configuration
+  3 - View the Default Configuration before making a choice
+Choice (int) : 3
+```
+
+```
+The default configuration is : 
+   Manual Mode 
+ Number of cells on the x-axis (int between 2 and 100) : 20
+ Number of cells on the y-axis (int between 2 and 100) : 20
+
+   Image Processing 
+ Threshold for the binary image (int between 0 and 255) : 127
+ Minimum number of points that can form a line (int) : 10
+ Maximum gap between two points to be considered in the same line (int) : 10
+ Angle for pseudo-vertical and pseudo-horizontal (int between 0 and 45) : 15
+ Maximum gap between two lines to be considered in the same line (int) : 10
+ Maximum gap between two parellel lines to be considered as the same line (int) : 10
+
+   Wall Parameters
+ Wall height (in meters) : 2.0
+ Wall thickness (in meters) : 0.02
+ Wall transparency (float between 0 and 1) : 0
+```
 
 ## To Do
