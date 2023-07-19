@@ -17,6 +17,17 @@ This tool cannot be used to create walls that are not straight.
 - Python 3.10
 - Python 3.11
 
+## Requirements
+- Programming Language : Python
+- Libraries to install : if you use "pip"
+```
+pip install numpy
+```
+```
+pip install opencv-python
+```
+- Application : Webots
+
 ## Libraries used
 
 - [NumPy](https://pypi.org/project/numpy/) for arrays
