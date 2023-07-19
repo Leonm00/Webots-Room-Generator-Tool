@@ -55,6 +55,29 @@ def get_GrayThreshold(gray) :
                     choice = input("    Press 'Y' to confirm the choice or 'N' to change it : ")
     return int(t)
 
+def get_Threshold() :
+    """_The threshold value for the binary thresholding step is obtained. The user is asked for an integer between 0 and 255 (grayscale)_
+
+    Returns:
+        t (_int_): _The threshold value used for binary thresholding_
+    """
+    print("Keep in mind that values above threshold are set to 255 (white) and those below are set to 0 (black). ")
+    t = input("Threshold for the binary image (int between 0 and 255). The default value is 127 : ")
+    isOK = False
+    while isOK == False : 
+        while C.check_input(t) != 'int' :
+            print("     Not an int - Please retry")
+            t = input("Threshold for the binary image (int between 0 and 255) : ")
+        if int(t) < 0 :
+            print("     Negative value - Please retry")
+            t = input("Threshold for the binary image (int between 0 and 255) : ")
+        elif int(t) > 255 :
+            print("     Value too High - Please retry")
+            t = input("Threshold for the binary image (int between 0 and 255) : ")
+        else : 
+            isOK = True
+    return int(t)
+
 def get_HoughParameters(image_name, edges) : 
     """_The parameters for the Hough algorithm (Line detection) is obtained. The user is asked for two integers and shown the associated result. The user is then asked whether or not to validate these values_
 
@@ -212,3 +235,4 @@ def get_angle() :
         else : 
             isOk = True
     return int(a)
+    
