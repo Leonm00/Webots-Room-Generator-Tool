@@ -10,12 +10,10 @@ def check_input(input) :
     try :
         # Convert it into integer
         val = int(input)
-        type = 'int'
-    except ValueError :
-        try :
-            # Convert it into float
-            val = float(input)
+        if float(val) == float(input) :
+            type = 'int'
+        else : 
             type = 'float'
-        except ValueError :
-            type = 'str'
+    except ValueError :
+        type = 'str'
     return type
