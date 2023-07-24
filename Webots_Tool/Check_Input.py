@@ -15,5 +15,10 @@ def check_input(input) :
         else : 
             type = 'float'
     except ValueError :
-        type = 'str'
+        try :
+            # Convert it into float
+            val = float(input)
+            type = 'float'
+        except ValueError :
+            type = 'str'
     return type
