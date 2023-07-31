@@ -10,6 +10,8 @@ This tool has two main features :
 - Using a graphic interface to create the different walls
 - Using an image to extract contours representing walls
 
+Each of these two features is available to generate a single Webots World or a set of Webots Worlds
+
 ## Features not included 
 This tool cannot be used to create walls that are not straight.
 
@@ -48,7 +50,7 @@ import tkinter as tk
 ```python
 import cv2
 ```
-## Main steps
+## Main steps : Generating a single Webots World
 
 ### Default Configuration
 The first step is to choose whether or not to modify the default configuration. To start with, use only the first choice.
@@ -372,4 +374,92 @@ The default configuration is :
  Wall transparency (float between 0 and 1) : 0
 ```
 
+## Main steps : Generating a Set of Webots World
+
+### Choose the feature
+```
+Please choose the feature you want to use for this Set Webots Room Generator Tool :
+1 - Without a set of images
+2 - With a set of images (does not work well for complex images)
+Choice (int) : 
+```
+
+### About the first feature - Random Generation
+To generate the webots world set, we will first retrieve all the necessary parameters.
+
+We choose if all the worlds have an identical number of walls or not.
+```
+About the number of walls :
+1 - A constant number of walls
+2 - A number of walls between a range of values
+Choice (int) : 
+```
+
+A closed figure is more difficult to generate than an open figure.
+```
+About the figure :
+1 - A closed figure
+2 - An open figure
+3 - Random
+Choice (int) : 
+```
+
+```
+Do you allow walls that cross each other ?
+  Press 'Y' for Yes or 'N' for No : 
+```
+```
+Do you diagonal movements (45° angle only) ?
+  Press 'Y' for Yes or 'N' for No : 
+```
+```
+About the direction of the first wall :
+1 - Not random
+2 - Random
+Choice (int) : 
+```
+```
+Knowing that the last wall is in a certain direction, what's the probability that the next wall will also be in that direction ? :
+Probability (int between 1 and 99) : 
+```
+```
+Keep in mind that too few cells will result in few different world.
+Number of cells on the x-axis :
+Number of cells on the y-axis : 
+```
+```
+About the length of the figure :
+1 - A constant length
+2 - A length between a range of values
+3 - Random
+Choice (int) : 
+```
+```
+About the height of walls :
+1 - A constant height
+2 - A height between a range of values
+Choice (int) : 
+```
+```
+About the thickness of walls :
+1 - A constant thickness
+2 - A thickness between a range of values
+Choice (int) : 
+```
+```
+About the transparency of walls :
+1 - A constant tranparency
+2 - A transparency between a range of values
+Choice (int) : 
+```
+We choose the number of worlds to generate. Knowing that the generation is random, it is possible that several worlds are identical.
+```
+What is the number of webots world to be generated satisfying all the above conditions ? : 
+```
+
+### About the second feature - With a set of images
+We will generate a webots world for each image in the set_images folder.
+This feature is not very suitable because the parameters are not optimized for each image.
+
 ## To Do
+- Global GUI
