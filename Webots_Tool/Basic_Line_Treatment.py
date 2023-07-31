@@ -22,13 +22,22 @@ def line_separation(room, isDefaultUse) :
         W_left_angle_diagonal (_list_): _List containing left-diagonal wall angles_
         W_right_angle_diagonal (_type_): _List containing right-diagonal wall angles_
     """
-    if isDefaultUse == True : 
+    if isDefaultUse is None :
+        angle = 20
+    elif isDefaultUse == True : 
         config = np.loadtxt("default_configuration.txt")
         angle = int(config[5])
     else : 
         angle = OI.get_angle()
     
-    room_x, room_y = room[:,0], room[:,1]
+    if isDefaultUse is None : 
+        room_x = []
+        room_y = []
+        for e in room :
+            room_x.append(e[0])
+            room_y.append(e[1])
+    else : 
+        room_x, room_y = room[:,0], room[:,1]
 
     W_vertical, W_horizontal = [], []
     W_left_diagonal, W_left_angle_diagonal = [], []
@@ -65,21 +74,21 @@ def line_separation(room, isDefaultUse) :
                         # We have a horizontal line
                         y_1 = y_2 
                         if x_1 < x_2 :
-                            W_horizontal.append([x_1, y_1])
+                            W_horizontal.append([x_1, y_2])
                             W_horizontal.append([x_2, y_2])
                         else : 
                             W_horizontal.append([x_2, y_2])
-                            W_horizontal.append([x_1, y_1])
+                            W_horizontal.append([x_1, y_2])
                         isDiagonal = False 
                 else :
                     if math.atan(abs(x_1 - x_2) / abs(y_1 - y_2)) < angle * (math.pi / 180) :
                         x_1 = x_2
                         if y_1 < y_2 :
-                            W_vertical.append([x_1, y_1])
+                            W_vertical.append([x_2, y_1])
                             W_vertical.append([x_2, y_2])
                         else : 
                             W_vertical.append([x_2, y_2])
-                            W_vertical.append([x_1, y_1])
+                            W_vertical.append([x_2, y_1])
                         isDiagonal = False
                 # If the current pair is a diagonal
                 if isDiagonal == True :
@@ -109,7 +118,7 @@ def line_separation(room, isDefaultUse) :
 
     return W_vertical, W_horizontal, W_left_diagonal, W_right_diagonal, W_left_angle_diagonal, W_right_angle_diagonal
 
-def fill_hole(W_vertical, W_horizontal, W_left_diagonal, W_right_diagonal, gap) :
+def fill_hole(W_vertical, W_horizontal, W_left_diagonal, W_right_diagonal, gap, isSetUse) :
     """_Each type of line is compared with other types of line, so that any gaps between them can be bridged and linked together. We have all the possible cases between each line category and another_
 
     Args:
@@ -302,59 +311,60 @@ def fill_hole(W_vertical, W_horizontal, W_left_diagonal, W_right_diagonal, gap) 
                                 ER[2 * l + 1] = 1
     W_vertical, EV, W_horizontal, EH, W_left_diagonal, EL, W_right_diagonal, ER = LF.erase_extra_and_bug(W_vertical, EV, W_horizontal, EH, W_left_diagonal, EL, W_right_diagonal, ER)
 
-    Ind_V = []
-    for i in range(int(len(EV) / 2)) :
-        if EV[2 * i] == EV[2 * i + 1] == 0 :
-            Ind_V.append(i)
-    Ind_V.sort(reverse = True)
-    Ind_H = []
-    for i in range(int(len(EH) / 2)) :
-        if EH[2 * i] == EH[2 * i + 1] == 0 :
-            Ind_H.append(i)
-    Ind_H.sort(reverse = True)
-    Ind_L = []
-    for i in range(int(len(EL) / 2)) :
-        if EL[2 * i] == EL[2 * i + 1] == 0 :
-            Ind_L.append(i)
-    Ind_L.sort(reverse = True)
-    Ind_R = []
-    for i in range(int(len(ER) / 2)) :
-        if ER[2 * i] == ER[2 * i + 1] == 0 :
-            Ind_R.append(i)
-    Ind_R.sort(reverse = True)
-    
-    print("Do you want to remove the walls that are all alone ?")
-    print(" Number of Vertical alone : ", len(Ind_V))
-    print(" Number of Horizontal alone : ", len(Ind_H))
-    print(" Number of Left Diagonal alone : ", len(Ind_L))
-    print(" Number of Right Diagonal alone : ", len(Ind_R))
-     
-    choice = input("    Press 'Y' for Yes or 'N' for No : ")
-    choiceOK = False
-    while choiceOK == False :
-        if C.check_input(choice) == 'str' :
-            if str(choice) == 'Y' or str(choice) == 'y' or str(choice) == 'N' or str(choice) == 'n' :
-                choiceOK = True
-            else :
-                print("     Not an expected string - Please retry")
+    if isSetUse == False : 
+        Ind_V = []
+        for i in range(int(len(EV) / 2)) :
+            if EV[2 * i] == EV[2 * i + 1] == 0 :
+                Ind_V.append(i)
+        Ind_V.sort(reverse = True)
+        Ind_H = []
+        for i in range(int(len(EH) / 2)) :
+            if EH[2 * i] == EH[2 * i + 1] == 0 :
+                Ind_H.append(i)
+        Ind_H.sort(reverse = True)
+        Ind_L = []
+        for i in range(int(len(EL) / 2)) :
+            if EL[2 * i] == EL[2 * i + 1] == 0 :
+                Ind_L.append(i)
+        Ind_L.sort(reverse = True)
+        Ind_R = []
+        for i in range(int(len(ER) / 2)) :
+            if ER[2 * i] == ER[2 * i + 1] == 0 :
+                Ind_R.append(i)
+        Ind_R.sort(reverse = True)
+        
+        print("Do you want to remove the walls that are all alone ?")
+        print(" Number of Vertical alone : ", len(Ind_V))
+        print(" Number of Horizontal alone : ", len(Ind_H))
+        print(" Number of Left Diagonal alone : ", len(Ind_L))
+        print(" Number of Right Diagonal alone : ", len(Ind_R))
+        
+        choice = input("    Press 'Y' for Yes or 'N' for No : ")
+        choiceOK = False
+        while choiceOK == False :
+            if C.check_input(choice) == 'str' :
+                if str(choice) == 'Y' or str(choice) == 'y' or str(choice) == 'N' or str(choice) == 'n' :
+                    choiceOK = True
+                else :
+                    print("     Not an expected string - Please retry")
+                    choice = input("    Press 'Y' for Yes or 'N' for No : ")
+            else : 
+                print("     Not a string - Please retry")
                 choice = input("    Press 'Y' for Yes or 'N' for No : ")
-        else : 
-            print("     Not a string - Please retry")
-            choice = input("    Press 'Y' for Yes or 'N' for No : ")
-            
-    if choice == 'Y' or choice == 'y' :
-        for e in Ind_V :
-            del(W_vertical[2 * e + 1])
-            del(W_vertical[2 * e])
-        for e in Ind_H :
-            del(W_horizontal[2 * e + 1])
-            del(W_horizontal[2 * e])
-        for e in Ind_L :
-            del(W_left_diagonal[2 * e + 1])
-            del(W_left_diagonal[2 * e])
-        for e in Ind_R :
-            del(W_right_diagonal[2 * e + 1])
-            del(W_right_diagonal[2 * e])
+                
+        if choice == 'Y' or choice == 'y' :
+            for e in Ind_V :
+                del(W_vertical[2 * e + 1])
+                del(W_vertical[2 * e])
+            for e in Ind_H :
+                del(W_horizontal[2 * e + 1])
+                del(W_horizontal[2 * e])
+            for e in Ind_L :
+                del(W_left_diagonal[2 * e + 1])
+                del(W_left_diagonal[2 * e])
+            for e in Ind_R :
+                del(W_right_diagonal[2 * e + 1])
+                del(W_right_diagonal[2 * e])
             
     W_room = []
     W_diagonal = []
