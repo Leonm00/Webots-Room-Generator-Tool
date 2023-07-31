@@ -137,7 +137,7 @@ def get_infos(image_name, isDefaultUse) :
             cv2.destroyAllWindows()
 
         image = cv2.imread("images/" + image_name)
-        W_room, W_vertical, W_horizontal, W_diagonal = BT.fill_hole(W_vertical, W_horizontal, W_left_diagonal, W_right_diagonal, gap)
+        W_room, W_vertical, W_horizontal, W_diagonal = BT.fill_hole(W_vertical, W_horizontal, W_left_diagonal, W_right_diagonal, gap, False)
         for m in range(int(len(W_room) / 2)) :
             W_1 = W_room[2 * m]
             W_2 = W_room[2 * m + 1]
@@ -166,8 +166,3 @@ def get_infos(image_name, isDefaultUse) :
                 choice = input("    Press 'Y' to confirm the choice or 'N' to change it : ")
     
     return 2, W_room, int(len(W_room) / 2), W_vertical, W_horizontal, W_diagonal
-
-    
-    
-    
-    
