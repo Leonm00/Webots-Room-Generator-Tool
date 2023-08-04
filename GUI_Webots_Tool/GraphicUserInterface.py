@@ -1606,7 +1606,7 @@ class GraphicInterface(tk.Tk) :
         Not_Image = []
         files = os.listdir(self.SetImageFolderNameChoice.get())
         for name in files:
-            image = cv2.imread("set_images/" + name)
+            image = cv2.imread(str(self.SetImageFolderNameChoice.get()) + "/" + name)
             if image is None :
                 Not_Image.append(name)
             else :
