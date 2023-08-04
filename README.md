@@ -4,6 +4,8 @@ This tool can be used to create webot worlds consisting of a floor and walls, ob
 
 This tool, coded entirely in Python, saves considerable time when creating a room with many walls, for example, as Webots requires you to place each wall manually, specifying its shape, size and position.
 
+This tool is available as a succession of user inputs (Webots_Tool folder) or as a global GUI that groups all inputs (GUI_Webots_Tool folder).
+
 ## Key features
 This tool has two main features :
 
