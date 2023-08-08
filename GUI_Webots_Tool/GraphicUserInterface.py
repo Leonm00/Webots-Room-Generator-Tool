@@ -16,7 +16,7 @@ class GraphicInterface(tk.Tk) :
         # Title
         self.title("Webots Tool - Room Generator")
 
-        # Canvas pour graphic treatment
+        # Canvas for Graphic Treatment
         self.Canvas = tk.Canvas(self, width = 700, height = 700)
         self.Reset_Button = tk.Button(self, text = "Reset")
         self.Finish_Button = tk.Button(self, text = "Finish")
@@ -44,6 +44,7 @@ class GraphicInterface(tk.Tk) :
         
         # Message
         self.Message = tk.Message(self, text = "")
+        self.MessagePointPosition = tk.Message(self, text = "")
         
         # First main choice: choose between generating a Set of Webots World or a single Webots World.
         self.SetChoiceLabel = tk.Label(self, text = "Number of webots world to generate : ")
@@ -192,13 +193,19 @@ class GraphicInterface(tk.Tk) :
         #### WITH IMAGES ####
         self.SetImageFolderNameChoiceLabel = tk.Label(self, text = "Choose the corresponded images folder : ")
         self.SetImageFolderNameChoice = tk.StringVar()
-        # Display the available folders
+        # Display the available folders with at least one image
         self.SetImageFolderNameChoiceOption = []
         file = os.listdir()
         for name in file:
             try :
                 files = os.listdir(name)
-                self.SetImageFolderNameChoiceOption.append(name)
+                isImage = False
+                for names in files :
+                    image = cv2.imread(str(name) + "/" + names)
+                    if image is not None :
+                        isImage = True
+                if isImage == True :
+                    self.SetImageFolderNameChoiceOption.append(name)
             except :
                 a = 1
         if len(self.SetImageFolderNameChoiceOption) == 0 :
@@ -380,25 +387,26 @@ class GraphicInterface(tk.Tk) :
         self.Delete_AllSetWithImage(4)
         self.Delete_AllWithoutImage(11)
         self.Delete_AllWithImage(7)
+        self.Delete_FeatureChoice()
+        self.Delete_SetFeatureChoice()
         # We retrieve the choice with get
         Choice = self.SetChoice.get()
         if Choice == '1+' :
-            self.Delete_FeatureChoice()
             self.Display_SetFeatureChoice()
         elif Choice == '1' :
-            self.Delete_SetFeatureChoice()
             self.Display_FeatureChoice()
 
     ############# SET OF WEBOTS WORLD ####################
     # Choice between using an image set or not 
     def Display_SetFeatureChoice(self) : 
         self.SetFeatureChoiceLabel.grid(column = 0, row = 1, sticky = tk.W, **self.paddings)
+        
         self.SetFeatureChoice = tk.StringVar()
         self.SetFeatureChoiceMenu = tk.OptionMenu(self, self.SetFeatureChoice, *self.SetFeatureChoiceOption, command = self.Get_SetFeatureChoice)
         self.SetFeatureChoiceMenu.grid(column = 1, row = 1, sticky = tk.W, **self.paddings)
     
     def Delete_SetFeatureChoice(self) :
-        self.FeatureChoiceLabel.grid_remove()
+        self.SetFeatureChoiceLabel.grid_remove()
         self.SetFeatureChoiceMenu.grid_remove()
 
     def Get_SetFeatureChoice(self, Choice) :
@@ -411,7 +419,7 @@ class GraphicInterface(tk.Tk) :
             if len(self.SetImageFolderNameChoiceOption) == 1 :
                 if self.SetImageFolderNameChoiceOption[0] == "NULL" :
                     self.Message = tk.Message(self, text = "No folder found")
-                    self.Message.grid(column = 2, row = 1, sticky = tk.W, **self.paddings)
+                    self.Message.grid(column = 3, row = 1, sticky = tk.W, **self.paddings)
                 else :
                     self.Display_SetImageFolderNameChoice()
             else : 
@@ -420,6 +428,7 @@ class GraphicInterface(tk.Tk) :
     # Wall Option
     def Display_SetWallChoice(self) :
         self.SetWallChoiceLabel.grid(column = 0, row = 2, sticky = tk.W, **self.paddings)
+        
         self.SetWallChoice = tk.StringVar()
         self.SetWallChoiceMenu = tk.OptionMenu(self, self.SetWallChoice, *self.ConstantVariableOption, command = self.Get_SetWallChoice)
         self.SetWallChoiceMenu.grid(column = 1, row = 2, sticky = tk.W, **self.paddings)
@@ -439,8 +448,10 @@ class GraphicInterface(tk.Tk) :
     # Constant number of walls (int)
     def Display_SetConstantWallChoice(self) :
         self.SetConstantWallChoiceLabel.grid(column = 0, row = 3, sticky = tk.W, **self.paddings)
+        
         self.SetConstantWallChoiceEntry = tk.Entry(self)
         self.SetConstantWallChoiceEntry.grid(column = 1, row = 3, sticky = tk.W, **self.paddings)
+        
         self.SetConstantWallChoiceSubmit.grid(column = 2, row = 3, sticky = tk.W, **self.paddings)
         
     def Delete_SetConstantWallChoice(self) :
@@ -463,9 +474,11 @@ class GraphicInterface(tk.Tk) :
         self.SetMinWallChoiceLabel.grid(column = 0, row = 3, sticky = tk.W, **self.paddings)
         self.SetMinWallChoiceEntry = tk.Entry(self)
         self.SetMinWallChoiceEntry.grid(column = 1, row = 3, sticky = tk.W, **self.paddings)
+        
         self.SetMaxWallChoiceLabel.grid(column = 0, row = 4, sticky = tk.W, **self.paddings)
         self.SetMaxWallChoiceEntry = tk.Entry(self)
         self.SetMaxWallChoiceEntry.grid(column = 1, row = 4, sticky = tk.W, **self.paddings)
+        
         self.SetRangeWallChoiceSubmit.grid(column = 2, row = 4, sticky = tk.W, **self.paddings)
         
     def Delete_SetRangeWallChoice(self) :
@@ -486,14 +499,15 @@ class GraphicInterface(tk.Tk) :
                 self.Display_SetFigureChoice()
             else :
                 self.Message = tk.Message(self, text = "Max value must be greater than Min value")
-                self.Message.grid(column = 3, row = 3, sticky = tk.W, **self.paddings)
+                self.Message.grid(column = 3, row = 4, sticky = tk.W, **self.paddings)
         else :
             self.Message = tk.Message(self, text = "Not two positive integer")
-            self.Message.grid(column = 3, row = 3, sticky = tk.W, **self.paddings)
+            self.Message.grid(column = 3, row = 4, sticky = tk.W, **self.paddings)
     
     # Figure shape Option
     def Display_SetFigureChoice(self) :
         self.SetFigureChoiceLabel.grid(column = 0, row = 5, sticky = tk.W, **self.paddings)
+        
         self.SetFigureChoice = tk.StringVar()
         self.SetFigureChoiceMenu = tk.OptionMenu(self, self.SetFigureChoice, *self.SetFigureChoiceOption, command = self.Get_SetFigureChoice)
         self.SetFigureChoiceMenu.grid(column = 1, row = 5, sticky = tk.W, **self.paddings)
@@ -509,6 +523,7 @@ class GraphicInterface(tk.Tk) :
     # Wall Crossing Option
     def Display_SetWallCrossingChoice(self) :
         self.SetWallCrossingChoiceLabel.grid(column = 0, row = 6, sticky = tk.W, **self.paddings)
+        
         self.SetWallCrossingChoice = tk.StringVar()
         self.SetWallCrossingChoiceMenu = tk.OptionMenu(self, self.SetWallCrossingChoice, *self.YesNoOption, command = self.Get_SetWallCrossingChoice)
         self.SetWallCrossingChoiceMenu.grid(column = 1, row = 6, sticky = tk.W, **self.paddings)
@@ -524,6 +539,7 @@ class GraphicInterface(tk.Tk) :
     # Diagonal Movement Option
     def Display_SetDiagonalMovementChoice(self) :
         self.SetDiagonalMovementChoiceLabel.grid(column = 0, row = 7, sticky = tk.W, **self.paddings)
+        
         self.SetDiagonalMovementChoice = tk.StringVar()
         self.SetDiagonalMovementChoiceMenu = tk.OptionMenu(self, self.SetDiagonalMovementChoice, *self.YesNoOption, command = self.Get_SetDiagonalMovementChoice)
         self.SetDiagonalMovementChoiceMenu.grid(column = 1, row = 7, sticky = tk.W, **self.paddings)
@@ -543,20 +559,22 @@ class GraphicInterface(tk.Tk) :
     # Direction for the first Wall
     def Display_SetFirstDirection1Choice(self) :
         self.SetFirstDirectionChoiceLabel.grid(column = 0, row = 8, sticky = tk.W, **self.paddings)
+        
         self.SetFirstDirectionChoice = tk.StringVar()
         self.SetFirstDirectionChoiceMenu = tk.OptionMenu(self, self.SetFirstDirectionChoice, *self.SetFirstDirectionChoice1Option, command = self.Get_SetFirstDirectionChoice)
+        self.SetFirstDirectionChoiceMenu.grid(column = 1, row = 8, sticky = tk.W, **self.paddings)
+        
+    def Display_SetFirstDirection2Choice(self) :
+        self.SetFirstDirectionChoiceLabel.grid(column = 0, row = 8, sticky = tk.W, **self.paddings)
+        
+        self.SetFirstDirectionChoice = tk.StringVar()
+        self.SetFirstDirectionChoiceMenu = tk.OptionMenu(self, self.SetFirstDirectionChoice, *self.SetFirstDirectionChoice2Option, command = self.Get_SetFirstDirectionChoice)
         self.SetFirstDirectionChoiceMenu.grid(column = 1, row = 8, sticky = tk.W, **self.paddings)
         
     def Delete_SetFirstDirectionChoice(self) :
         self.SetFirstDirectionChoiceLabel.grid_remove()
         self.SetFirstDirectionChoiceMenu.grid_remove()
-        
-    def Display_SetFirstDirection2Choice(self) :
-        self.SetFirstDirectionChoiceLabel.grid(column = 0, row = 8, sticky = tk.W, **self.paddings)
-        self.SetFirstDirectionChoice = tk.StringVar()
-        self.SetFirstDirectionChoiceMenu = tk.OptionMenu(self, self.SetFirstDirectionChoice, *self.SetFirstDirectionChoice2Option, command = self.Get_SetFirstDirectionChoice)
-        self.SetFirstDirectionChoiceMenu.grid(column = 1, row = 8, sticky = tk.W, **self.paddings)
-        
+           
     def Get_SetFirstDirectionChoice(self, Choice) :
         self.Delete_AllSetWithoutImage(11)
         self.Display_SetProbaSameDirectionChoice()
@@ -564,8 +582,10 @@ class GraphicInterface(tk.Tk) :
     # Same direction probability (int)
     def Display_SetProbaSameDirectionChoice(self) :
         self.SetProbaSameDirectionChoiceLabel.grid(column = 0, row = 9, sticky = tk.W, **self.paddings)
+        
         self.SetProbaSameDirectionChoiceEntry = tk.Entry(self)
         self.SetProbaSameDirectionChoiceEntry.grid(column = 1, row = 9, sticky = tk.W, **self.paddings)
+        
         self.SetProbaSameDirectionChoiceSubmit = tk.Button(self, text = "Submit", command = self.Get_SetProbaSameDirectionChoice)
         self.SetProbaSameDirectionChoiceSubmit.grid(column = 2, row = 9, sticky = tk.W, **self.paddings)
         
@@ -591,12 +611,15 @@ class GraphicInterface(tk.Tk) :
     # Matrix Size (int)
     def Display_SetMatrixIJChoice(self) :
         self.SetMatrixChoiceLabel.grid(column = 0, row = 10, sticky = tk.W, **self.paddings)
+        
         self.SetMatrixJChoiceLabel.grid(column = 0, row = 11, sticky = tk.W, **self.paddings)
         self.SetMatrixJChoiceEntry = tk.Entry(self)
         self.SetMatrixJChoiceEntry.grid(column = 1, row = 11, sticky = tk.W, **self.paddings)
+        
         self.SetMatrixIChoiceLabel.grid(column = 0, row = 12, sticky = tk.W, **self.paddings)
         self.SetMatrixIChoiceEntry = tk.Entry(self)
         self.SetMatrixIChoiceEntry.grid(column = 1, row = 12, sticky = tk.W, **self.paddings)
+        
         self.SetMatrixChoiceSubmit = tk.Button(self, text = "Submit", command = self.Get_SetMatrixIJChoice)
         self.SetMatrixChoiceSubmit.grid(column = 2, row = 12, sticky = tk.W, **self.paddings)
     
@@ -627,6 +650,7 @@ class GraphicInterface(tk.Tk) :
     # Figure Length Option
     def Display_SetLengthChoice(self) :
         self.SetLengthChoiceLabel.grid(column = 0, row = 13, sticky = tk.W, **self.paddings)
+        
         self.SetLengthChoice = tk.StringVar()
         self.SetLengthChoiceMenu = tk.OptionMenu(self, self.SetLengthChoice, *self.SetLengthChoiceOption, command = self.Get_SetLengthChoice)
         self.SetLengthChoiceMenu.grid(column = 1, row = 13, sticky = tk.W, **self.paddings)
@@ -648,6 +672,7 @@ class GraphicInterface(tk.Tk) :
     # Constant figure length (float)
     def Display_SetConstantLengthChoice(self) :
         self.SetConstantLengthChoiceLabel.grid(column = 0, row = 14, sticky = tk.W, **self.paddings)
+        
         self.SetConstantLengthChoiceEntry = tk.Entry(self)
         self.SetConstantLengthChoiceEntry.grid(column = 1, row = 14, sticky = tk.W, **self.paddings)
         self.SetConstantLengthChoiceSubmit.grid(column = 2, row = 14, sticky = tk.W, **self.paddings)
@@ -672,12 +697,15 @@ class GraphicInterface(tk.Tk) :
         self.SetMinLengthChoiceLabel.grid(column = 0, row = 14, sticky = tk.W, **self.paddings)
         self.SetMinLengthChoiceEntry = tk.Entry(self)
         self.SetMinLengthChoiceEntry.grid(column = 1, row = 14, sticky = tk.W, **self.paddings)
+        
         self.SetMaxLengthChoiceLabel.grid(column = 0, row = 15, sticky = tk.W, **self.paddings)
         self.SetMaxLengthChoiceEntry = tk.Entry(self)
         self.SetMaxLengthChoiceEntry.grid(column = 1, row = 15, sticky = tk.W, **self.paddings)
+        
         self.SetStepLengthChoiceLabel.grid(column = 0, row = 16, sticky = tk.W, **self.paddings)
         self.SetStepLengthChoiceEntry = tk.Entry(self)
         self.SetStepLengthChoiceEntry.grid(column = 1, row = 16, sticky = tk.W, **self.paddings)
+        
         self.SetRangeLengthChoiceSubmit.grid(column = 2, row = 16, sticky = tk.W, **self.paddings)
         
     def Delete_SetRangeLengthChoice(self) :
@@ -714,6 +742,7 @@ class GraphicInterface(tk.Tk) :
     # Length for one cell
     def Display_SetCellLengthChoice(self) :
         self.SetCellLengthChoiceLabel.grid(column = 0, row = 14, sticky = tk.W, **self.paddings)
+        
         self.SetCellLengthChoiceEntry = tk.Entry(self)
         self.SetCellLengthChoiceEntry.grid(column = 1, row = 14, sticky = tk.W, **self.paddings)
         self.SetCellLengthChoiceSubmit.grid(column = 2, row = 14, sticky = tk.W, **self.paddings)
@@ -736,6 +765,7 @@ class GraphicInterface(tk.Tk) :
     # Height Wall Option
     def Display_SetHeightWallChoice(self) :
         self.SetHeightWallChoiceLabel.grid(column = 4, row = 2, sticky = tk.W, **self.paddings)
+        
         self.SetHeightWallChoice = tk.StringVar()
         self.SetHeightWallChoiceMenu = tk.OptionMenu(self, self.SetHeightWallChoice, *self.ConstantVariableOption, command = self.Get_SetHeightWallChoice)
         self.SetHeightWallChoiceMenu.grid(column = 5, row = 2, sticky = tk.W, **self.paddings)
@@ -755,6 +785,7 @@ class GraphicInterface(tk.Tk) :
     # Constant Height Wall (float)
     def Display_SetConstantHeightWallChoice(self) :
         self.SetConstantHeightWallChoiceLabel.grid(column = 4, row = 3, sticky = tk.W, **self.paddings)
+        
         self.SetConstantHeightWallChoiceEntry = tk.Entry(self)
         self.SetConstantHeightWallChoiceEntry.grid(column = 5, row = 3, sticky = tk.W, **self.paddings)
         self.SetConstantHeightWallChoiceSubmit.grid(column = 6, row = 3, sticky = tk.W, **self.paddings)
@@ -779,12 +810,15 @@ class GraphicInterface(tk.Tk) :
         self.SetMinHeightWallChoiceLabel.grid(column = 4, row = 3, sticky = tk.W, **self.paddings)
         self.SetMinHeightWallChoiceEntry = tk.Entry(self)
         self.SetMinHeightWallChoiceEntry.grid(column = 5, row = 3, sticky = tk.W, **self.paddings)
+        
         self.SetMaxHeightWallChoiceLabel.grid(column = 4, row = 4, sticky = tk.W, **self.paddings)
         self.SetMaxHeightWallChoiceEntry = tk.Entry(self)
         self.SetMaxHeightWallChoiceEntry.grid(column = 5, row = 4, sticky = tk.W, **self.paddings)
+        
         self.SetStepHeightWallChoiceLabel.grid(column = 4, row = 5, sticky = tk.W, **self.paddings)
         self.SetStepHeightWallChoiceEntry = tk.Entry(self)
         self.SetStepHeightWallChoiceEntry.grid(column = 5, row = 5, sticky = tk.W, **self.paddings)
+        
         self.SetRangeHeightWallChoiceSubmit.grid(column = 6, row = 5, sticky = tk.W, **self.paddings)
         
     def Delete_SetRangeHeightWallChoice(self) :
@@ -821,6 +855,7 @@ class GraphicInterface(tk.Tk) :
     # Thickness Wall Option
     def Display_SetThicknessWallChoice(self) :
         self.SetThicknessWallChoiceLabel.grid(column = 4, row = 6, sticky = tk.W, **self.paddings)
+        
         self.SetThicknessWallChoice = tk.StringVar()
         self.SetThicknessWallChoiceMenu = tk.OptionMenu(self, self.SetThicknessWallChoice, *self.ConstantVariableOption, command = self.Get_SetThicknessWallChoice)
         self.SetThicknessWallChoiceMenu.grid(column = 5, row = 6, sticky = tk.W, **self.paddings)
@@ -840,8 +875,10 @@ class GraphicInterface(tk.Tk) :
     # Constant Thickness Wall (float)
     def Display_SetConstantThicknessWallChoice(self) :
         self.SetConstantThicknessWallChoiceLabel.grid(column = 4, row = 7, sticky = tk.W, **self.paddings)
+        
         self.SetConstantThicknessWallChoiceEntry = tk.Entry(self)
         self.SetConstantThicknessWallChoiceEntry.grid(column = 5, row = 7, sticky = tk.W, **self.paddings)
+        
         self.SetConstantThicknessWallChoiceSubmit.grid(column = 6, row = 7, sticky = tk.W, **self.paddings)
     
     def Delete_SetConstantThicknessWallChoice(self) :
@@ -864,12 +901,15 @@ class GraphicInterface(tk.Tk) :
         self.SetMinThicknessWallChoiceLabel.grid(column = 4, row = 7, sticky = tk.W, **self.paddings)
         self.SetMinThicknessWallChoiceEntry = tk.Entry(self)
         self.SetMinThicknessWallChoiceEntry.grid(column = 5, row = 7, sticky = tk.W, **self.paddings)
+        
         self.SetMaxThicknessWallChoiceLabel.grid(column = 4, row = 8, sticky = tk.W, **self.paddings)
         self.SetMaxThicknessWallChoiceEntry = tk.Entry(self)
         self.SetMaxThicknessWallChoiceEntry.grid(column = 5, row = 8, sticky = tk.W, **self.paddings)
+        
         self.SetStepThicknessWallChoiceLabel.grid(column = 4, row = 9, sticky = tk.W, **self.paddings)
         self.SetStepThicknessWallChoiceEntry = tk.Entry(self)
         self.SetStepThicknessWallChoiceEntry.grid(column = 5, row = 9, sticky = tk.W, **self.paddings)
+        
         self.SetRangeThicknessWallChoiceSubmit.grid(column = 6, row = 9, sticky = tk.W, **self.paddings)
     
     def Delete_SetRangeThicknessWallChoice(self) :
@@ -879,7 +919,7 @@ class GraphicInterface(tk.Tk) :
         self.SetMaxThicknessWallChoiceEntry.grid_remove()
         self.SetStepThicknessWallChoiceLabel.grid_remove()
         self.SetStepThicknessWallChoiceEntry.grid_remove()
-        self.SetRangeHeightWallChoiceSubmit.grid_remove()
+        self.SetRangeThicknessWallChoiceSubmit.grid_remove()
         
     def Get_SetRangeThicknessWallChoice(self) :
         self.Delete_AllSetWithoutImage(3)
@@ -906,6 +946,7 @@ class GraphicInterface(tk.Tk) :
     # Transparency Wall Option
     def Display_SetTransparencyWallChoice(self) :
         self.SetTransparencyWallChoiceLabel.grid(column = 4, row = 10, sticky = tk.W, **self.paddings)
+        
         self.SetTransparencyWallChoice = tk.StringVar()
         self.SetTransparencyWallChoiceMenu = tk.OptionMenu(self, self.SetTransparencyWallChoice, *self.ConstantVariableOption, command = self.Get_SetTransparencyWallChoice)
         self.SetTransparencyWallChoiceMenu.grid(column = 5, row = 10, sticky = tk.W, **self.paddings)
@@ -925,8 +966,10 @@ class GraphicInterface(tk.Tk) :
     # Constant Transparency Wall (float)
     def Display_SetConstantTransparencyWallChoice(self) :
         self.SetConstantTransparencyWallChoiceLabel.grid(column = 4, row = 11, sticky = tk.W, **self.paddings)
+        
         self.SetConstantTransparencyWallChoiceEntry = tk.Entry(self)
         self.SetConstantTransparencyWallChoiceEntry.grid(column = 5, row = 11, sticky = tk.W, **self.paddings)
+        
         self.SetConstantTransparencyWallChoiceSubmit.grid(column = 6, row = 11, sticky = tk.W, **self.paddings)
     
     def Delete_SetConstantTransparencyWallChoice(self) :
@@ -949,12 +992,15 @@ class GraphicInterface(tk.Tk) :
         self.SetMinTransparencyWallChoiceLabel.grid(column = 4, row = 11, sticky = tk.W, **self.paddings)
         self.SetMinTransparencyWallChoiceEntry = tk.Entry(self)
         self.SetMinTransparencyWallChoiceEntry.grid(column = 5, row = 11, sticky = tk.W, **self.paddings)
+        
         self.SetMaxTransparencyWallChoiceLabel.grid(column = 4, row = 12, sticky = tk.W, **self.paddings)
         self.SetMaxTransparencyWallChoiceEntry = tk.Entry(self)
         self.SetMaxTransparencyWallChoiceEntry.grid(column = 5, row = 12, sticky = tk.W, **self.paddings)
+        
         self.SetStepTransparencyWallChoiceLabel.grid(column = 4, row = 13, sticky = tk.W, **self.paddings)
         self.SetStepTransparencyWallChoiceEntry = tk.Entry(self)
         self.SetStepTransparencyWallChoiceEntry.grid(column = 5, row = 13, sticky = tk.W, **self.paddings)
+        
         self.SetRangeTransparencyWallChoiceSubmit.grid(column = 6, row = 13, sticky = tk.W, **self.paddings)
         
     def Delete_SetRangeTransparencyWallChoice(self) :
@@ -994,8 +1040,10 @@ class GraphicInterface(tk.Tk) :
     # Number of Webots World (int)
     def Display_SetNumberWorldChoice(self) :
         self.SetNumberWorldChoiceLabel.grid(column = 4, row = 14, sticky = tk.W, **self.paddings)
+        
         self.SetNumberWorldChoiceEntry = tk.Entry(self)
         self.SetNumberWorldChoiceEntry.grid(column = 5, row = 14, sticky = tk.W, **self.paddings)
+        
         self.SetNumberWorldChoiceSubmit.grid(column = 6, row = 14, sticky = tk.W, **self.paddings)
 
     def Delete_SetNumberWorldChoice(self) :
@@ -1016,8 +1064,10 @@ class GraphicInterface(tk.Tk) :
     # Prefix name for the Webots World
     def Display_SetPrefixNameChoice(self) :
         self.SetPrefixNameChoiceLabel.grid(column = 4, row = 15, sticky = tk.W, **self.paddings)
+        
         self.SetPrefixNameChoiceEntry = tk.Entry(self)
         self.SetPrefixNameChoiceEntry.grid(column = 5, row = 15, sticky = tk.W, **self.paddings)
+        
         self.SetPrefixNameChoiceSubmit.grid(column = 6, row = 15, sticky = tk.W, **self.paddings)
         
     def Delete_SetPrefixNameChoice(self) :
@@ -1418,7 +1468,8 @@ class GraphicInterface(tk.Tk) :
                 print()
                 if i == Nbr_World :
                     isFinish = True
-                    print(" FINISH")
+                    self.Message = tk.Message(self, text = "FINISH")
+                    self.Message.grid(column = 7, row = 15, sticky = tk.W, **self.paddings)
                 else :
                     # We iterate the number of generated worlds
                     i += 1
@@ -1434,7 +1485,8 @@ class GraphicInterface(tk.Tk) :
                 print()
                 if i == Nbr_World :
                     isFinish = True
-                    print(" FINISH")
+                    self.Message = tk.Message(self, text = "FINISH")
+                    self.Message.grid(column = 7, row = 15, sticky = tk.W, **self.paddings)
                 else :
                     i += 1
         #self.destroy()
@@ -1500,6 +1552,7 @@ class GraphicInterface(tk.Tk) :
     # We choose the images folder 
     def Display_SetImageFolderNameChoice(self) :
         self.SetImageFolderNameChoiceLabel.grid(column = 0, row = 2, sticky = tk.W, **self.paddings)
+        
         self.SetImageFolderNameChoice = tk.StringVar()
         self.SetImageFolderNameChoiceMenu = tk.OptionMenu(self, self.SetImageFolderNameChoice, *self.SetImageFolderNameChoiceOption, command = self.Get_SetImageFolderNameChoice)
         self.SetImageFolderNameChoiceMenu.grid(column = 1, row = 2, sticky = tk.W, **self.paddings)
@@ -1515,8 +1568,10 @@ class GraphicInterface(tk.Tk) :
     # Lenght for a pixel
     def Display_SetPixelLengthChoice(self) :
         self.SetPixelLengthChoiceLabel.grid(column = 0, row = 3, sticky = tk.W, **self.paddings)
+        
         self.SetPixelLengthChoiceEntry = tk.Entry(self)
         self.SetPixelLengthChoiceEntry.grid(column = 1, row = 3, sticky = tk.W, **self.paddings)
+        
         self.SetPixelLengthChoiceSubmit.grid(column = 2, row = 3, sticky = tk.W, **self.paddings)
     
     def Delete_SetPixelLengthChoice(self) :
@@ -1537,8 +1592,10 @@ class GraphicInterface(tk.Tk) :
     # Height Wall Choice
     def Display_SetImageHeightWallChoice(self) :
         self.SetImageHeightWallChoiceLabel.grid(column = 0, row = 4, sticky = tk.W, **self.paddings)
+        
         self.SetImageHeightWallChoiceEntry = tk.Entry(self)
         self.SetImageHeightWallChoiceEntry.grid(column = 1, row = 4, sticky = tk.W, **self.paddings)
+        
         self.SetImageHeightWallChoiceSubmit.grid(column = 2, row = 4, sticky = tk.W, **self.paddings)
     
     def Delete_SetImageHeightWallChoice(self) :
@@ -1559,8 +1616,10 @@ class GraphicInterface(tk.Tk) :
     # Thickness Wall Choice
     def Display_SetImageThicknessWallChoice(self) :
         self.SetImageThicknessWallChoiceLabel.grid(column = 0, row = 5, sticky = tk.W, **self.paddings)
+        
         self.SetImageThicknessWallChoiceEntry = tk.Entry(self)
         self.SetImageThicknessWallChoiceEntry.grid(column = 1, row = 5, sticky = tk.W, **self.paddings)
+        
         self.SetImageThicknessWallChoiceSubmit.grid(column = 2, row = 5, sticky = tk.W, **self.paddings)
 
     def Delete_SetImageThicknessWallChoice(self) :
@@ -1581,8 +1640,10 @@ class GraphicInterface(tk.Tk) :
     # Transparency Wall Choice
     def Display_SetImageTransparencyWallChoice(self) :
         self.SetImageTransparencyWallChoiceLabel.grid(column = 0, row = 6, sticky = tk.W, **self.paddings)
+        
         self.SetImageTransparencyWallChoiceEntry = tk.Entry(self)
         self.SetImageTransparencyWallChoiceEntry.grid(column = 1, row = 6, sticky = tk.W, **self.paddings)
+        
         self.SetImageTransparencyWallChoiceSubmit.grid(column = 2, row = 6, sticky = tk.W, **self.paddings)
     
     def Delete_SetImageTransparencyWallChoice(self) :
@@ -1616,6 +1677,7 @@ class GraphicInterface(tk.Tk) :
         print("     Total images : ", len(Image_Name))
         print("     Name of image file : ", Image_Name)
         print("     Name of others file : ", Not_Image)
+        print()
         
         Pixel_Length = float(self.SetPixelLengthChoiceEntry.get())
         Wall_Height = float(self.SetImageHeightWallChoiceEntry.get())
@@ -1695,6 +1757,7 @@ class GraphicInterface(tk.Tk) :
             print(" Number of horizontals : ", int(len(W_horizontal) / 2))
             print(" Number of left diagonals : ", int(len(W_left_diagonal) / 2))
             print(" Number of right diagonals : ", int(len(W_right_diagonal) / 2))
+            print()
             
             W_room, W_vertical, W_horizontal, W_diagonal = BT.fill_hole(W_vertical, W_horizontal, W_left_diagonal, W_right_diagonal, gap)
 
@@ -1710,6 +1773,7 @@ class GraphicInterface(tk.Tk) :
     # Feature Option between Manual Mode and Image Processing
     def Display_FeatureChoice(self) :
         self.FeatureChoiceLabel.grid(column = 0, row = 1, sticky = tk.W, **self.paddings)
+        
         self.FeatureChoice = tk.StringVar()
         self.FeatureChoiceMenu = tk.OptionMenu(self, self.FeatureChoice, *self.FeatureChoiceOption, command = self.Get_FeatureChoice)
         self.FeatureChoiceMenu.grid(column = 1, row = 1, sticky = tk.W, **self.paddings)
@@ -1726,6 +1790,7 @@ class GraphicInterface(tk.Tk) :
     # Default Configuration Option
     def Display_DefaultConfigurationChoice(self) :
         self.DefaultConfigurationChoiceLabel.grid(column = 0, row = 2, sticky = tk.W, **self.paddings)
+        
         self.DefaultConfigurationChoice = tk.StringVar()
         self.DefaultConfigurationChoiceMenu = tk.OptionMenu(self, self.DefaultConfigurationChoice, *self.DefaultConfigurationChoiceOption, command = self.Get_DefaultConfigurationChoice)
         self.DefaultConfigurationChoiceMenu.grid(column = 1, row = 2, sticky = tk.W, **self.paddings)
@@ -1773,39 +1838,51 @@ class GraphicInterface(tk.Tk) :
         self.NewDefaultConfigurationChoiceLabel00.grid(column = 0, row = 3, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceLabel01.grid(column = 0, row = 6, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceLabel02.grid(column = 0, row = 13, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel1.grid(column = 0, row = 4, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry1 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry1.grid(column = 1, row = 4, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel2.grid(column = 0, row = 5, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry2 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry2.grid(column = 1, row = 5, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel3.grid(column = 0, row = 7, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry3 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry3.grid(column = 1, row = 7, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel4.grid(column = 0, row = 8, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry4 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry4.grid(column = 1, row = 8, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel5.grid(column = 0, row = 9, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry5 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry5.grid(column = 1, row = 9, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel6.grid(column = 0, row = 10, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry6 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry6.grid(column = 1, row = 10, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel7.grid(column = 0, row = 11, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry7 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry7.grid(column = 1, row = 11, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel8.grid(column = 0, row = 12, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry8 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry8.grid(column = 1, row = 12, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel9.grid(column = 0, row = 14, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry9 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry9.grid(column = 1, row = 14, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel10.grid(column = 0, row = 15, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry10 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry10.grid(column = 1, row = 15, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceLabel11.grid(column = 0, row = 16, sticky = tk.W, **self.paddings)
         self.NewDefaultConfigurationChoiceEntry11 = tk.Entry(self)
         self.NewDefaultConfigurationChoiceEntry11.grid(column = 1, row = 16, sticky = tk.W, **self.paddings)
+        
         self.NewDefaultConfigurationChoiceSubmit.grid(column = 2, row = 16, sticky = tk.W, **self.paddings)
     
     def Delete_NewDefaultConfigurationChoice(self) :
@@ -1945,12 +2022,15 @@ class GraphicInterface(tk.Tk) :
     # Grid size for Manual Mode
     def Display_GridChoice(self) :
         self.GridChoiceLabel.grid(column = 0, row = 3, sticky = tk.W, **self.paddings)
+        
         self.GridXChoiceLabel.grid(column = 0, row = 4, sticky = tk.W, **self.paddings)
         self.GridXChoiceEntry = tk.Entry(self)
         self.GridXChoiceEntry.grid(column = 1, row = 4, sticky = tk.W, **self.paddings)
+        
         self.GridYChoiceLabel.grid(column = 0, row = 5, sticky = tk.W, **self.paddings)
         self.GridYChoiceEntry = tk.Entry(self)
         self.GridYChoiceEntry.grid(column = 1, row = 5, sticky = tk.W, **self.paddings)
+        
         self.GridChoiceSubmit.grid(column = 2, row = 5, sticky = tk.W, **self.paddings)
 
     def Delete_GridChoice(self) :
@@ -1976,6 +2056,7 @@ class GraphicInterface(tk.Tk) :
     # Manual Mode Option
     def Display_ManualOptionChoice(self) :
         self.ManualOptionChoiceLabel.grid(column = 0, row = 6, sticky = tk.W, **self.paddings)
+        
         self.ManualOptionChoice = tk.StringVar()
         self.ManualOptionChoiceOptionMenu = tk.OptionMenu(self, self.ManualOptionChoice, *self.ManualOptionChoiceOption, command = self.Get_ManualOptionChoice)
         self.ManualOptionChoiceOptionMenu.grid(column = 1, row = 6, sticky = tk.W, **self.paddings)
@@ -1995,6 +2076,7 @@ class GraphicInterface(tk.Tk) :
 
         self.point = []
         self.Walls = []
+        self.WallsCanvas = []
         
         if isDefault == 'Use' :
             self.W = int(self.config[0])
@@ -2032,6 +2114,7 @@ class GraphicInterface(tk.Tk) :
         x, y = event.x, event.y
         x, y = x / self.Grid_size, y / self.Grid_size
         temp_x, temp_y = int(x), int(y)
+        self.MessagePointPosition.grid_remove()
         if abs(temp_x - x) > 0.5 :
             x = temp_x + 1
         else :
@@ -2042,12 +2125,20 @@ class GraphicInterface(tk.Tk) :
             y = temp_y
         if len(self.points) == 0 :
             self.points.append((x, y))
-            print(self.points[-1])
+            
+            PointPosition = "Point coordinates : " + str(self.points[-1])
+            self.MessagePointPosition = tk.Message(self, text = PointPosition)
+            self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+
             self.Canvas.create_oval(x * self.Grid_size - 3, y * self.Grid_size - 3, x * self.Grid_size + 3, y * self.Grid_size + 3, fill = "red")
         else :
             if (x, y) != (self.points[-1][0], self.points[-1][1]) :
                 self.points.append((x, y))
-                print(self.points[-1])
+                
+                PointPosition = "Point coordinates : " + str(self.points[-1])
+                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+
                 self.Canvas.create_line(self.points[-2][0] * self.Grid_size, self.points[-2][1] * self.Grid_size, x * self.Grid_size, y * self.Grid_size, fill = "blue")
                 self.Canvas.create_oval(x * self.Grid_size - 3, y * self.Grid_size - 3, x * self.Grid_size + 3, y * self.Grid_size + 3, fill = "red")
         if len(self.points) > 2 :
@@ -2078,6 +2169,7 @@ class GraphicInterface(tk.Tk) :
         x, y = event.x, event.y
         x, y = x / self.Grid_size, y / self.Grid_size
         temp_x, temp_y = int(x), int(y)
+        self.MessagePointPosition.grid_remove()
         if abs(temp_x - x) > 0.5 :
             x = temp_x + 1
         else :
@@ -2088,12 +2180,20 @@ class GraphicInterface(tk.Tk) :
             y = temp_y
         if len(self.points) % 2 == 0 :
             self.points.append((x, y))
-            print(self.points[-1])
+
+            PointPosition = "Point coordinates : " + str(self.points[-1])
+            self.MessagePointPosition = tk.Message(self, text = PointPosition)
+            self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+            
             self.Canvas.create_oval(x * self.Grid_size - 3, y * self.Grid_size - 3, x * self.Grid_size + 3, y * self.Grid_size + 3, fill = "red")
         else :
             if (x, y) != (self.points[-1][0], self.points[-1][1]) :
                 self.points.append((x, y))
-                print(self.points[-1])
+                
+                PointPosition = "Point coordinates : " + str(self.points[-1])
+                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+            
                 self.Canvas.create_line(self.points[-2][0] * self.Grid_size, self.points[-2][1] * self.Grid_size, x * self.Grid_size, y * self.Grid_size, fill = "blue")
                 self.Canvas.create_oval(x * self.Grid_size - 3, y * self.Grid_size - 3, x * self.Grid_size + 3, y * self.Grid_size + 3, fill = "red")
         if len(self.points) > 3 and len(self.points) % 2 == 0 :
@@ -2133,6 +2233,7 @@ class GraphicInterface(tk.Tk) :
     def Finish_Room(self) :
         isFinish = False
         self.Message.grid_remove()
+        self.MessagePointPosition.grid_remove()
         if len(self.points) > 3 : 
             if self.points[0] == self.points[-1] : 
                 isFinish = True
@@ -2162,6 +2263,7 @@ class GraphicInterface(tk.Tk) :
  
     def Finish_Free(self) : 
         self.Message.grid_remove()
+        self.MessagePointPosition.grid_remove()
         if len(self.points) > 0 :  
             if len(self.points) % 2 == 0 :
                 # y coordinates are in the opposite direction
@@ -2183,11 +2285,13 @@ class GraphicInterface(tk.Tk) :
             self.Message.grid(column = 5, row = 0, sticky = tk.W, **self.paddings)
         
     def Reset(self) :
+        self.MessagePointPosition.grid_remove()
         self.points = []
         self.Canvas.delete("all")
         self.Create_grid()
         
     def Remove_last_Room(self, event) : 
+        self.MessagePointPosition.grid_remove()
         if (len(self.points)) > 0 :
             self.points.pop(-1)
         self.Canvas.delete("all")
@@ -2195,6 +2299,7 @@ class GraphicInterface(tk.Tk) :
         self.Add_from_Room()
         
     def Remove_last_Free(self, event) :
+        self.MessagePointPosition.grid_remove()
         if (len(self.points)) > 0 :
             self.points.pop(-1)
         self.Canvas.delete("all")
@@ -2205,7 +2310,6 @@ class GraphicInterface(tk.Tk) :
         self.Canvas.grid_remove()
         self.Reset_Button.grid_remove()
         self.Finish_Button.grid_remove()
-
         if self.DefaultConfigurationChoice.get() == 'Use' :
             self.Display_DeleteLineChoice()
         elif self.DefaultConfigurationChoice.get() == 'Not used' :
@@ -2214,8 +2318,10 @@ class GraphicInterface(tk.Tk) :
     # Height Wall Choice (float)
     def Display_HeightWallChoice(self) :
         self.HeightWallChoiceLabel.grid(column = 0, row = 12, sticky = tk.W, **self.paddings)
+        
         self.HeightWallChoiceEntry = tk.Entry(self)
         self.HeightWallChoiceEntry.grid(column = 1, row = 12, sticky = tk.W, **self.paddings)
+        
         self.HeightWallChoiceSubmit.grid(column = 2, row = 12, sticky = tk.W, **self.paddings)
 
     def Delete_HeightWallChoice(self) :
@@ -2236,8 +2342,10 @@ class GraphicInterface(tk.Tk) :
     # Thickness Wall Choice (float)
     def Display_ThicknessWallChoice(self) :
         self.ThicknessWallChoiceLabel.grid(column = 0, row = 13, sticky = tk.W, **self.paddings)
+        
         self.ThicknessWallChoiceEntry = tk.Entry(self)
         self.ThicknessWallChoiceEntry.grid(column = 1, row = 13, sticky = tk.W, **self.paddings)
+        
         self.ThicknessWallChoiceSubmit.grid(column = 2, row = 13, sticky = tk.W, **self.paddings)
     
     def Delete_ThicknessWallChoice(self) :
@@ -2258,8 +2366,10 @@ class GraphicInterface(tk.Tk) :
     # Transparency Wall Choice (float)
     def Display_TransparencyWallChoice(self) :
         self.TransparencyWallChoiceLabel.grid(column = 0, row = 14, sticky = tk.W, **self.paddings)
+        
         self.TransparencyWallChoiceEntry = tk.Entry(self)
         self.TransparencyWallChoiceEntry.grid(column = 1, row = 14, sticky = tk.W, **self.paddings)
+        
         self.TransparencyWallChoiceSubmit.grid(column = 2, row = 14, sticky = tk.W, **self.paddings)
         
     def Delete_TransparencyWallChoice(self) :
@@ -2280,6 +2390,7 @@ class GraphicInterface(tk.Tk) :
     # Delete Line Option
     def Display_DeleteLineChoice(self) :
         self.DeleteLineChoiceLabel.grid(column = 0, row = 15, sticky = tk.W, **self.paddings)
+        
         self.DeleteLineChoice = tk.StringVar()
         self.DeleteLineChoiceMenu = tk.OptionMenu(self, self.DeleteLineChoice, *self.YesNoOption, command = self.Get_DeleteLineChoice)
         self.DeleteLineChoiceMenu.grid(column = 1, row = 15, sticky = tk.W, **self.paddings)
@@ -2292,13 +2403,20 @@ class GraphicInterface(tk.Tk) :
         self.Delete_AllWithoutImage(2)
         Choice = self.DeleteLineChoice.get()
         if Choice == 'Yes' :
-            self.Display_DeleteLineCanvas()
+            if len(self.WallsCanvas) == 0 :
+                self.Message = tk.Message(self, text = "No line left")
+                self.Message.grid(column = 3, row = 15, sticky = tk.W, **self.paddings)
+            else : 
+                self.Display_DeleteLineCanvas()
         elif Choice == 'No' :
             self.Display_LengthFigureChoice()
             
     # Canvas : Line deletion
     def Display_DeleteLineCanvas(self) :
         min_x, min_y, max_x, max_y = TF.get_min_max(self.WallsCanvas)
+        
+        self.line = []
+        self.line_index = 0
         
         self.W = int(max_x + min_x)
         self.H = int(max_y + min_y)
@@ -2331,6 +2449,7 @@ class GraphicInterface(tk.Tk) :
         x, y = event.x, event.y
         x, y = x / self.Grid_size, y / self.Grid_size
         temp_x, temp_y = int(x), int(y)
+        self.MessagePointPosition.grid_remove()
         if abs(temp_x - x) > 0.5 :
             x = temp_x + 1
         else :
@@ -2347,7 +2466,11 @@ class GraphicInterface(tk.Tk) :
                         if self.WallsCanvas[i] == [x, y] and isOK == False :
                             isOK = True
                             self.line.append((x, y))
-                            print(self.line[-1])
+                            
+                            PointPosition = "Point coordinates : " + str(self.line[-1])
+                            self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                            self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+
                             self.Canvas.create_oval(self.line[0][0] * self.Grid_size - 4, self.line[0][1] * self.Grid_size - 4, self.line[0][0] * self.Grid_size + 4, self.line[0][1] * self.Grid_size + 4, fill = "red")
                 elif len(self.line) == 1 :
                     isOK = False
@@ -2361,7 +2484,11 @@ class GraphicInterface(tk.Tk) :
                                 isOK = True
                                 self.line_index = i
                                 self.line.append((x, y))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
                         elif [H_2[0], H_2[1]] == [L_1[0], L_1[1]] :
@@ -2369,7 +2496,11 @@ class GraphicInterface(tk.Tk) :
                                 isOK = True
                                 self.line_index = i
                                 self.line.append((x, y))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                                
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
             else : 
@@ -2379,7 +2510,11 @@ class GraphicInterface(tk.Tk) :
                         if isOK == False and math.dist(self.WallsCanvas[i], [x, y]) <= 5 :
                             isOK = True
                             self.line.append((self.WallsCanvas[i][0], self.WallsCanvas[i][1]))
-                            print(self.line[-1])
+                            
+                            PointPosition = "Point coordinates : " + str(self.line[-1])
+                            self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                            self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                             self.Canvas.create_oval(self.line[0][0] * self.Grid_size - 4, self.line[0][1] * self.Grid_size - 4, self.line[0][0] * self.Grid_size + 4, self.line[0][1] * self.Grid_size + 4, fill = "red")
                 elif len(self.line) == 1 :
                     isOK = False
@@ -2393,7 +2528,11 @@ class GraphicInterface(tk.Tk) :
                                 self.line_index = i
                                 isOK = True
                                 self.line.append((H_2[0], H_2[1]))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
                         elif [H_2[0], H_2[1]] == [L_1[0], L_1[1]] :
@@ -2401,7 +2540,11 @@ class GraphicInterface(tk.Tk) :
                                 self.line_index = i 
                                 isOK = True
                                 self.line.append((H_1[0], H_1[1]))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
                 
@@ -2416,6 +2559,8 @@ class GraphicInterface(tk.Tk) :
             self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
 
     def DeleteLine(self) :
+        self.Message.grid_remove()
+        self.MessagePointPosition.grid_remove()
         if len(self.line) == 2 : 
             del(self.WallsCanvas[2 * self.line_index + 1])
             del(self.WallsCanvas[2 * self.line_index])
@@ -2426,13 +2571,16 @@ class GraphicInterface(tk.Tk) :
             self.Create_grid()
             self.Add_from_points_DeleteLine()
         else : 
-            print("     No line selected")
-            print("PLEASE Add point(s)")
+            self.Message = tk.Message(self, text = "No line selected")
+            self.Message.grid(column = 5, row = 0, sticky = tk.W, **self.paddings)
             
     def Finish_DeleteLine(self) : 
+        self.Message.grid_remove()
+        self.MessagePointPosition.grid_remove()
         self.Delete_DeleteLineCanvas()
 
     def Remove_last_DeleteLine(self, event) :
+        self.MessagePointPosition.grid_remove()
         if (len(self.line)) > 0 :
             self.line.pop(-1)
         self.Canvas.delete("all")
@@ -2443,12 +2591,12 @@ class GraphicInterface(tk.Tk) :
         self.Canvas.grid_remove()
         self.Delete_Button.grid_remove()
         self.Finish_Button.grid_remove()
-
         self.Display_LengthFigureChoice()
         
     # Figure length Option
     def Display_LengthFigureChoice(self) :
         self.LengthFigureChoiceLabel.grid(column = 0, row = 16, sticky = tk.W, **self.paddings)
+        
         self.LengthFigureChoice = tk.StringVar()
         self.LengthFigureChoiceMenu = tk.OptionMenu(self, self.LengthFigureChoice, *self.LengthFigureChoiceOption, command = self.Get_LengthFigureChoice)
         self.LengthFigureChoiceMenu.grid(column = 1, row = 16, sticky = tk.W, **self.paddings)
@@ -2463,17 +2611,20 @@ class GraphicInterface(tk.Tk) :
         if Choice == 'Define the total length of the figure' :
             self.Display_ConstantLengthFigureChoice()
         elif Choice == 'Define the length of a line' :
-            if len(self.WallsCanvas) >= 2 :
-                self.Display_SelectLineCanvas()
+            if len(self.WallsCanvas) == 0 :
+                self.Message = tk.Message(self, text = "No line left")
+                self.Message.grid(column = 3, row = 16, sticky = tk.W, **self.paddings)
             else :
-                self.LengthFigureChoice = 'Define the total length of the figure'
-                self.Display_ConstantLengthFigureChoice()
+                self.Display_SelectLineCanvas()
         
     # Canvas : Select line
     def Display_SelectLineCanvas(self) :
         min_x, min_y, max_x, max_y = TF.get_min_max(self.WallsCanvas)
         
         self.line = []
+        self.line_index = 0
+        self.dist_line = 0
+        
         self.W = int(max_x + min_x)
         self.H = int(max_y + min_y)
 
@@ -2497,12 +2648,13 @@ class GraphicInterface(tk.Tk) :
             
         self.Finish_Button = tk.Button(self, text = "Finish", command = self.Finish_SelectLine)
 
-        self.Finish_Button.grid(column = 4, row = 2, sticky = tk.W, **self.paddings)
+        self.Finish_Button.grid(column = 4, row = 1, sticky = tk.W, **self.paddings)
         
     def Add_point_SelectLine(self, event) :
         x, y = event.x, event.y
         x, y = x / self.Grid_size, y / self.Grid_size
         temp_x, temp_y = int(x), int(y)
+        self.MessagePointPosition.grid_remove()
         if abs(temp_x - x) > 0.5 :
             x = temp_x + 1
         else :
@@ -2520,7 +2672,11 @@ class GraphicInterface(tk.Tk) :
                         if self.WallsCanvas[i] == [x, y] and isOK == False :
                             isOK = True
                             self.line.append((x, y))
-                            print(self.line[-1])
+                            
+                            PointPosition = "Point coordinates : " + str(self.line[-1])
+                            self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                            self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                             self.Canvas.create_oval(self.line[0][0] * self.Grid_size - 4, self.line[0][1] * self.Grid_size - 4, self.line[0][0] * self.Grid_size + 4, self.line[0][1] * self.Grid_size + 4, fill = "red")
                 elif len(self.line) == 1 :
                     isOK = False
@@ -2533,14 +2689,22 @@ class GraphicInterface(tk.Tk) :
                             if [x, y] == [H_2[0], H_2[1]] and isOK == False :
                                 isOK = True
                                 self.line.append((x, y))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
                         elif [H_2[0], H_2[1]] == [L_1[0], L_1[1]] :
                             if [x, y] == [H_1[0], H_1[1]] and isOK == False :
                                 isOK = True
                                 self.line.append((x, y))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
             else : 
@@ -2550,7 +2714,11 @@ class GraphicInterface(tk.Tk) :
                         if isOK == False and math.dist(self.WallsCanvas[i], [x, y]) <= 5 :
                             isOK = True
                             self.line.append((self.WallsCanvas[i][0], self.WallsCanvas[i][1]))
-                            print(self.line[-1])
+                            
+                            PointPosition = "Point coordinates : " + str(self.line[-1])
+                            self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                            self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                             self.Canvas.create_oval(self.line[0][0] * self.Grid_size - 4, self.line[0][1] * self.Grid_size - 4, self.line[0][0] * self.Grid_size + 4, self.line[0][1] * self.Grid_size + 4, fill = "red")
                 elif len(self.line) == 1 :
                     isOK = False
@@ -2563,14 +2731,22 @@ class GraphicInterface(tk.Tk) :
                             if isOK == False and math.dist([x, y],[H_2[0], H_2[1]]) <= 5 :
                                 isOK = True
                                 self.line.append((H_2[0], H_2[1]))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
                         elif [H_2[0], H_2[1]] == [L_1[0], L_1[1]] :
                             if isOK == False and math.dist([x, y], [H_1[0], H_1[1]]) <= 5 :
                                 isOK = True
                                 self.line.append((H_1[0], H_1[1]))
-                                print(self.line[-1])
+                                
+                                PointPosition = "Point coordinates : " + str(self.line[-1])
+                                self.MessagePointPosition = tk.Message(self, text = PointPosition)
+                                self.MessagePointPosition.grid(column = 5, row = 1, sticky = tk.W, **self.paddings)
+                            
                                 self.Canvas.create_line(self.line[0][0] * self.Grid_size, self.line[0][1] * self.Grid_size, self.line[1][0] * self.Grid_size, self.line[1][1] * self.Grid_size, fill = "red")
                                 self.Canvas.create_oval(self.line[1][0] * self.Grid_size - 4, self.line[1][1] * self.Grid_size - 4, self.line[1][0] * self.Grid_size + 4, self.line[1][1] * self.Grid_size + 4, fill = "red")
                 
@@ -2590,6 +2766,7 @@ class GraphicInterface(tk.Tk) :
 
     def Finish_SelectLine(self) : 
         self.Message.grid_remove()
+        self.MessagePointPosition.grid_remove()
         if len(self.line) == 2 : 
             self.dist_line = math.dist(self.line[0], self.line[1])
             self.Delete_SelectLineCanvas()
@@ -2598,6 +2775,7 @@ class GraphicInterface(tk.Tk) :
             self.Message.grid(column = 5, row = 0, sticky = tk.W, **self.paddings)
 
     def Remove_last_SelectLine(self, event) :
+        self.MessagePointPosition.grid_remove()
         if (len(self.line)) > 0 :
             self.line.pop(-1)
         self.Canvas.delete("all")
@@ -2617,8 +2795,10 @@ class GraphicInterface(tk.Tk) :
     # Constant figure length choice (float)
     def Display_ConstantLengthFigureChoice(self) :
         self.ConstantLengthFigureChoiceLabel.grid(column = 0, row = 17, sticky = tk.W, **self.paddings)
+        
         self.ConstantLengthFigureChoiceEntry = tk.Entry(self)
         self.ConstantLengthFigureChoiceEntry.grid(column = 1, row = 17, sticky = tk.W, **self.paddings)
+        
         self.ConstantLengthFigureChoiceSubmit.grid(column = 2, row = 17, sticky = tk.W, **self.paddings)
         
     def Delete_ConstantLengthFigureChoice(self) :
@@ -2639,8 +2819,10 @@ class GraphicInterface(tk.Tk) :
     # Lenght for a line (float)
     def Display_LineLengthChoice(self) :
         self.LineLengthChoiceLabel.grid(column = 0, row = 17, sticky = tk.W, **self.paddings)
+        
         self.LineLengthChoiceEntry = tk.Entry(self)
         self.LineLengthChoiceEntry.grid(column = 1, row = 17, sticky = tk.W, **self.paddings)
+        
         self.LineLengthChoiceSubmit.grid(column = 2, row = 17, sticky = tk.W, **self.paddings)
         
     def Delete_LineLengthChoice(self) :
@@ -2661,8 +2843,10 @@ class GraphicInterface(tk.Tk) :
     # Name for the webots world (str)
     def Display_WorldNameChoice(self) :
         self.WorldNameChoiceLabel.grid(column = 0, row = 18, sticky = tk.W, **self.paddings)
+        
         self.WorldNameChoiceEntry = tk.Entry(self)
         self.WorldNameChoiceEntry.grid(column = 1, row = 18, sticky = tk.W, **self.paddings)
+        
         self.WorldNameChoiceSubmit.grid(column = 2, row = 18, sticky = tk.W, **self.paddings)
 
     def Delete_WorldNameChoice(self) :
@@ -2711,6 +2895,7 @@ class GraphicInterface(tk.Tk) :
     # Choose the image folder
     def Display_ImageFolderNameChoice(self) :
         self.ImageFolderNameChoiceLabel.grid(column = 0, row = 3, sticky = tk.W, **self.paddings)
+        
         self.ImageFolderNameChoice = tk.StringVar()
         self.ImageFolderNameChoiceMenu = tk.OptionMenu(self, self.ImageFolderNameChoice, *self.ImageFolderNameChoiceOption, command = self.Get_ImageFolderNameChoice)
         self.ImageFolderNameChoiceMenu.grid(column = 1, row = 3, sticky = tk.W, **self.paddings)
@@ -2742,20 +2927,6 @@ class GraphicInterface(tk.Tk) :
         self.ImageNameChoiceMenu.grid_remove()
         
     def Get_ImageNameChoice(self, Choice) :
-        # Canvas parameters
-        self.points = []
-        self.Walls = []
-        self.WallsCanvas = []
-        self.Grid_size = 0
-        self.W = 0
-        self.H = 0
-        self.Width = 0
-        self.Height = 0
-        # Empty list to store the coordinates of the line to delete
-        self.line = []
-        self.line_index = 0
-        self.dist_line = 0
-        
         self.Delete_AllWithoutImage(6)
         self.Delete_AllWithImage(5)
         if self.DefaultConfigurationChoice.get() == 'Use' :
@@ -2766,9 +2937,11 @@ class GraphicInterface(tk.Tk) :
     # Choose the binary threshold (int)
     def Display_BinaryThresholdChoice(self) :
         self.BinaryThresholdChoiceLabel0.grid(column = 0, row = 5, sticky = tk.W, **self.paddings)
+        
         self.BinaryThresholdChoiceLabel.grid(column = 0, row = 6, sticky = tk.W, **self.paddings)
         self.BinaryThresholdChoiceEntry = tk.Entry(self)
         self.BinaryThresholdChoiceEntry.grid(column = 1, row = 6, sticky = tk.W, **self.paddings)
+        
         self.BinaryThresholdChoiceSubmit.grid(column = 2, row = 6, sticky = tk.W, **self.paddings)
         
     def Delete_BinaryThresholdChoice(self) :
@@ -2809,8 +2982,10 @@ class GraphicInterface(tk.Tk) :
     # Line choice for line detection (int)
     def Display_LineDetectionChoice(self) :
         self.LineDetectionChoiceLabel.grid(column = 0, row = 7, sticky = tk.W, **self.paddings)
+        
         self.LineDetectionChoiceEntry = tk.Entry(self)
         self.LineDetectionChoiceEntry.grid(column = 1, row = 7, sticky = tk.W, **self.paddings)
+        
         self.LineDetectionChoiceSubmit.grid(column = 2, row = 7, sticky = tk.W, **self.paddings)
         
     def Delete_LineDetectionChoice(self) :
@@ -2832,8 +3007,10 @@ class GraphicInterface(tk.Tk) :
     # Gap line for line detection (int)
     def Display_GapLineDetectionChoice(self) :
         self.GapLineDetectionChoiceLabel.grid(column = 0, row = 8, sticky = tk.W, **self.paddings)
+        
         self.GapLineDetectionChoiceEntry = tk.Entry(self)
         self.GapLineDetectionChoiceEntry.grid(column = 1, row = 8, sticky = tk.W, **self.paddings)
+        
         self.GapLineDetectionChoiceSubmit.grid(column = 2, row = 8, sticky = tk.W, **self.paddings)
         
     def Delete_GapLineDetectionChoice(self) :
@@ -2882,8 +3059,10 @@ class GraphicInterface(tk.Tk) :
     # Angle choice (int)
     def Display_AngleChoice(self) :
         self.AngleChoiceLabel.grid(column = 0, row = 9, sticky = tk.W, **self.paddings)
+        
         self.AngleChoiceEntry = tk.Entry(self)
         self.AngleChoiceEntry.grid(column = 1, row = 9, sticky = tk.W, **self.paddings)
+        
         self.AngleChoiceSubmit.grid(column = 2, row = 9, sticky = tk.W, **self.paddings)
         
     def Delete_AngleChoice(self) :
@@ -2961,8 +3140,10 @@ class GraphicInterface(tk.Tk) :
     # Gap for line treatment (int)
     def Display_GapSameLine(self) :
         self.GapSameLineLabel.grid(column = 0, row = 10, sticky = tk.W, **self.paddings)
+        
         self.GapSameLineEntry = tk.Entry(self)
         self.GapSameLineEntry.grid(column = 1, row = 10, sticky = tk.W, **self.paddings)
+        
         self.GapSameLineSubmit.grid(column = 2, row = 10, sticky = tk.W, **self.paddings)
 
     def Delete_GapSameLine(self) :
@@ -2984,8 +3165,10 @@ class GraphicInterface(tk.Tk) :
     # Gap for parallel line treatment
     def Display_GapParallelLine(self) :
         self.GapParallelLineLabel.grid(column = 0, row = 11, sticky = tk.W, **self.paddings)
+        
         self.GapParallelLineEntry = tk.Entry(self)
         self.GapParallelLineEntry.grid(column = 1, row = 11, sticky = tk.W, **self.paddings)
+        
         self.GapParallelLineSubmit.grid(column = 2, row = 11, sticky = tk.W, **self.paddings)
         
     def Delete_GapParallelLine(self) :
@@ -3108,6 +3291,10 @@ class GraphicInterface(tk.Tk) :
         if ind >= 8 :
             self.Delete_GridChoice()
         if ind >= 7 :
+            self.Delete_ManualOptionChoice()
+        if ind >= 6 :
+            self.Delete_HeightWallChoice()
+            
             # Canvas parameters
             self.points = []
             self.Walls = []
@@ -3121,10 +3308,6 @@ class GraphicInterface(tk.Tk) :
             self.line = []
             self.line_index = 0
             self.dist_line = 0
-            
-            self.Delete_ManualOptionChoice()
-        if ind >= 6 :
-            self.Delete_HeightWallChoice()
         if ind >= 5 :
             self.Delete_ThicknessWallChoice()
         if ind >= 4 :
@@ -3139,12 +3322,32 @@ class GraphicInterface(tk.Tk) :
         if ind >= 0 :
             self.Delete_WorldNameChoice()
             self.Message.grid_remove()
-        
+            self.MessagePointPosition.grid_remove()
+            self.Canvas.grid_remove()
+            self.Reset_Button.grid_remove()
+            self.Finish_Button.grid_remove()
+            self.Delete_Button.grid_remove()
+            
     def Delete_AllWithImage(self, ind) :
         if ind >= 7 :
             self.Delete_ImageFolderNameChoice()
         if ind >= 6 :
             self.Delete_ImageNameChoice()
+            
+            # Canvas parameters
+            self.points = []
+            self.Walls = []
+            self.WallsCanvas = []
+            self.Grid_size = 0
+            self.W = 0
+            self.H = 0
+            self.Width = 0
+            self.Height = 0
+            # Empty list to store the coordinates of the line to delete
+            self.line = []
+            self.line_index = 0
+            self.dist_line = 0
+            
         if ind >= 5 :
             self.Delete_BinaryThresholdChoice()
         if ind >= 4 :
@@ -3158,7 +3361,8 @@ class GraphicInterface(tk.Tk) :
         if ind >= 0 :
             self.Delete_GapParallelLine()
             self.Message.grid_remove()
-
-
-
-
+            self.MessagePointPosition.grid_remove()
+            self.Canvas.grid_remove()
+            self.Reset_Button.grid_remove()
+            self.Finish_Button.grid_remove()
+            self.Delete_Button.grid_remove()
