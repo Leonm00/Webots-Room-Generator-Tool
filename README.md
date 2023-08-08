@@ -52,7 +52,7 @@ import tkinter as tk
 ```python
 import cv2
 ```
-## Main steps : Generating a single Webots World
+## Main steps (non-GUI version) : Generating a single Webots World
 
 ### Default Configuration
 The first step is to choose whether or not to modify the default configuration. To start with, use only the first choice.
@@ -100,7 +100,7 @@ Define wall transparency (float between 0 and 1 | 1 for a transparent wall). The
 Define the total length of the figure (in meters), the width will be adjusted accordingly :
 ```
 
-## About the first feature - Graphical Interface
+## About the first feature (non-GUI version) - Graphical Interface
 ```
 Please choose the feature you want to use for this Webots Room Generator Tool :
   1 - Manual
@@ -161,7 +161,7 @@ Define the total length of the figure (in meters), the width will be adjusted ac
 #### Open the example.wbt file on Webots :
 ![Room Creation on Webots](/screenshot/Room_Creation_Webots.png)
 
-## About the second feature - Image processing
+## About the second feature (non-GUI version) - Image processing
 ```
 Please choose the feature you want to use for this Webots Room Generator Tool :
   1 - Manual
@@ -464,4 +464,3 @@ We will generate a webots world for each image in the set_images folder.
 This feature is not very suitable because the parameters are not optimized for each image.
 
 ## To Do
-- Global GUI
